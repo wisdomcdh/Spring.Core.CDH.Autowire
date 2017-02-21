@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<objects xmlns="http://www.springframework.net"
+         xmlns:db="http://www.springframework.net/database"
+         xmlns:tx="http://www.springframework.net/tx">
+  <db:provider id="DbProvider" provider="System.Data.SqlClient" connectionString="SERVER=111.111.111.111;DATABASE=TESTDB;USER ID=test; PASSWORD=testpassword" />
+  <db:provider id="DbProvider2" provider="System.Data.SqlClient" connectionString="SERVER=222.222.222.222;DATABASE=TESTDB;USER ID=test; PASSWORD=testpassword" />
+  <object id="AdoTemplate" type="Spring.Data.Generic.AdoTemplate, Spring.Data">
+    <property name="DbProvider" ref="DbProvider" />
+    <property name="DataReaderWrapperType" value="Spring.Data.Support.NullMappingDataReader, Spring.Data" />
+    <property name="CommandTimeout" value="60" />
+  </object>
+  <object id="AdoTemplate2" type="Spring.Data.Generic.AdoTemplate, Spring.Data">
+    <property name="DbProvider" ref="DbProvider2" />
+    <property name="DataReaderWrapperType" value="Spring.Data.Support.NullMappingDataReader, Spring.Data" />
+    <property name="CommandTimeout" value="60" />
+  </object>
+  <object id="transactionManager" type="Spring.Data.Core.AdoPlatformTransactionManager, Spring.Data">
+    <property name="DbProvider" ref="DbProvider" />
+  </object>
+  <object id="transactionManager2" type="Spring.Data.Core.AdoPlatformTransactionManager, Spring.Data">
+    <property name="DbProvider" ref="DbProvider2" />
+  </object>
+  <tx:attribute-driven />
+</objects>
