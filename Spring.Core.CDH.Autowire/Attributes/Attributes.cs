@@ -12,6 +12,12 @@ namespace Spring.Core.CDH.Autowire
         public bool Singleton { get; set; } = true;
     }
 
+    [AttributeUsage(AttributeTargets.Class)]
+    public class AutowireControllerAttribute : Attribute
+    {
+        public bool Singleton { get; set; } = false;
+    }
+
     [AttributeUsage(AttributeTargets.Property, AllowMultiple = true)]
     public class InjectionPropertyAttribute : Attribute
     {

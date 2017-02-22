@@ -3,6 +3,7 @@ using Spring.Context;
 using Spring.Context.Support;
 using Spring.Core.CDH.Autowire;
 using Spring.Data.Generic;
+using Spring.Transaction.Interceptor;
 using System;
 using System.IO;
 
@@ -40,6 +41,13 @@ namespace Test
         public void Test()
         {
             SpringAutowire.Autowire(this);
+        }
+
+        [Test]
+        public void Test2()
+        {
+            ITestServiceTran svc = new TestServiceTran();
+            SpringAutowire.Autowire(svc);
         }
 
         public interface ITestDao { void TestFunction(); }
@@ -87,6 +95,19 @@ namespace Test
         {
             [Autowire]
             public ITestService2 TestService2 { get; set; }
+        }
+
+        public interface ITestServiceTran { void Tran(); }
+
+        public class TestServiceTran : ITestServiceTran
+        {
+            [Autowire]
+            public ITestDao TestDao { get; set; }
+
+            [Transaction]
+            public void Tran()
+            {
+            }
         }
     }
 }

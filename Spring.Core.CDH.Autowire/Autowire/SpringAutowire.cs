@@ -39,7 +39,7 @@ namespace Spring.Core.CDH.Autowire
             }
         }
 
-        private static string CreateObjectDefinition(AbstractApplicationContext ctx, AutowireTargetProperty prop)
+        public static string CreateObjectDefinition(AbstractApplicationContext ctx, AutowireTargetProperty prop)
         {
             if (!ctx.IsObjectNameInUse(prop.AutowireAttr.ContextName))
             {
@@ -152,7 +152,7 @@ namespace Spring.Core.CDH.Autowire
             return prop.GetCustomAttributes<InjectionPropertyAttribute>().FirstOrDefault(t => t is InjectionAdoTemplateAttribute || t.PropertyName.Equals("AdoTemplate"));
         }
 
-        internal class AutowireTargetProperty
+        public class AutowireTargetProperty
         {
             public PropertyInfo Prop { get; set; }
             public AutowireAttribute AutowireAttr { get; set; }
