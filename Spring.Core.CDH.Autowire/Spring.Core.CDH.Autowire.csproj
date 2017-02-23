@@ -56,7 +56,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Attributes\AutowireAdoTemplateAttribute.cs" />
     <Compile Include="Attributes\Attributes.cs" />
     <Compile Include="Autowire\AutowireControllerFactory.cs" />
     <Compile Include="Autowire\SpringAutowire.cs" />
