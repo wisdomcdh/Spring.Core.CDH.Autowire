@@ -78,12 +78,16 @@
   <ItemGroup>
     <Compile Include="AutowireTest.cs" />
     <Compile Include="ContextRegisterTest.cs" />
+    <Compile Include="Dao\MyTable\IMyTableDao.cs" />
+    <Compile Include="Dao\MyTable\MyTableDao.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Service\HelloWorld\HelloWorldENService.cs" />
     <Compile Include="Service\HelloWorld\HelloWorldJPService.cs" />
     <Compile Include="Service\HelloWorld\HelloWorldKRService.cs" />
     <Compile Include="Service\HelloWorld\HelloWorldService.cs" />
     <Compile Include="Service\HelloWorld\IHelloWorldService.cs" />
+    <Compile Include="Service\MyTable\IMyTableService.cs" />
+    <Compile Include="Service\MyTable\MyTableService.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

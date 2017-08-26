@@ -1,5 +1,6 @@
 ﻿using NUnit.Framework;
 using Spring.Core.CDH.Autowire;
+using Test.Dao.MyTable;
 using Test.Service.HelloWorld;
 
 namespace Test
@@ -18,6 +19,24 @@ namespace Test
             Assert.AreEqual("こんにちは", instance.HelloWorld_JP.SayHello());
         }
 
+        [Test]
+        public void Autowire_AdoDaoSupport_SetDefault_AdoTemplateName()
+        {
+            var instance = new SetDefault_AdoTemplateName();
+            SpringAutowire.Autowire(instance);
+
+            Assert.AreEqual("SERVER=localhost;DATABASE=myTestDB;USER ID=myAccount;PASSWORD=myPassword", instance.MyTableDao.GetConnectionString());
+        }
+
+        [Test]
+        public void Autowire_AdoDaoSupport_SetOther_AdoTemplateName()
+        {
+            var instance = new SetOther_AdoTemplateName();
+            SpringAutowire.Autowire(instance);
+
+            Assert.AreEqual("SERVER=192.168.0.101;DATABASE=myTestDB;USER ID=myAccount;PASSWORD=myPassword", instance.MyTableDao.GetConnectionString());
+        }
+
         public class TestController
         {
             [Autowire]
@@ -31,6 +50,19 @@ namespace Test
 
             [Autowire(Type = (typeof(HelloWorldJPService)))]
             public IHelloWorldService HelloWorld_JP { get; set; }
+        }
+
+        public class SetDefault_AdoTemplateName
+        {
+            [Autowire]
+            public IMyTableDao MyTableDao { get; set; }
+        }
+
+        public class SetOther_AdoTemplateName
+        {
+            [Autowire]
+            [AdoTemplateName("AdoTemplate2")]
+            public IMyTableDao MyTableDao { get; set; }
         }
     }
 }

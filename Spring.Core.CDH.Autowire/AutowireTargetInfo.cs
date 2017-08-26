@@ -7,21 +7,55 @@ namespace Spring.Core.CDH.Autowire
 {
     public class AutowireTargetInfo
     {
-        public AutowireAttribute AutowireAttribute { get; private set; }
+        private Type _AutowireContextType;
+        private string _AutowireContextName;
+        private bool? _IsAdoDaoSupport;
+
         public AutowireTargetInfo Parent { get; private set; }
-        public Type AutowireContextType { get; private set; }
-        public string AutowireContextName { get; private set; }
         public PropertyInfo PropertyInfo { get; private set; }
-        public bool IsAdoDaoSupport { get; private set; }
+        public AutowireAttribute AutowireAttribute { get; private set; }
+
+        public Type AutowireContextType
+        {
+            get
+            {
+                if (_AutowireContextType == null)
+                {
+                    _AutowireContextType = GetAutowireContextType();
+                }
+                return _AutowireContextType;
+            }
+        }
+
+        public string AutowireContextName
+        {
+            get
+            {
+                if (_AutowireContextName == null)
+                {
+                    _AutowireContextName = GetAutowireContextName();
+                }
+                return _AutowireContextName;
+            }
+        }
+
+        public bool IsAdoDaoSupport
+        {
+            get
+            {
+                if (!_IsAdoDaoSupport.HasValue)
+                {
+                    _IsAdoDaoSupport = GetIsAdoDaoSupport(AutowireContextType);
+                }
+                return _IsAdoDaoSupport.Value;
+            }
+        }
 
         public AutowireTargetInfo(PropertyInfo prop, AutowireTargetInfo parent = null)
         {
             Parent = parent;
             PropertyInfo = prop;
             AutowireAttribute = prop.GetCustomAttribute<AutowireAttribute>(false);
-            AutowireContextType = GetAutowireContextType();
-            AutowireContextName = GetAutowireContextName();
-            IsAdoDaoSupport = GetIsAdoDaoSupport(AutowireContextType);
         }
 
         private string GetAutowireContextName()
