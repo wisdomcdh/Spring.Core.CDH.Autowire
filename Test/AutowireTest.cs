@@ -3,15 +3,15 @@ using Spring.Context;
 using Spring.Context.Support;
 using Spring.Core.CDH.Autowire;
 using Spring.Data.Generic;
-using Spring.Transaction.Interceptor;
 using System;
 using System.IO;
 
 namespace Test
 {
+    [TestFixture]
     public class AutowireTest
     {
-        [SetUp]
+        [OneTimeSetUp]
         public void OneTimeSetup()
         {
             string path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "SpringContext.xml");
@@ -20,94 +20,50 @@ namespace Test
             ContextRegistry.RegisterContext(context);
         }
 
-        [Autowire]
-        public ITestService injectTestService { get; set; }
-
-        [Autowire]
-        public ITestDao injectTestDao { get; set; }
-
-        [Autowire]
-        [InjectionAdoTemplate("AdoTemplate2")]
-        public ITestDao injectTestDao2 { get; set; }
-
-        [Autowire(Type = typeof(TestDao2))]
-        [InjectionProperty("AdoTemplate", "AdoTemplate")]
-        public ITestDao injectTestDao3 { get; set; }
-
-        [Autowire]
-        public ITestService2 injectTestService2 { get; set; }
-
         [Test]
         public void Test()
         {
-            SpringAutowire.Autowire(this);
+            var myMvcController = new MyMvcController();
+
+            SpringAutowire.Autowire(myMvcController);
         }
+    }
 
-        [Test]
-        public void Test2()
-        {
-            ITestServiceTran svc = new TestServiceTran();
-            SpringAutowire.Autowire(svc);
-        }
+    public class MyMvcController
+    {
+        [Autowire(Type = typeof(MyService1))]
+        public IMyService MyService1 { get; set; }
 
-        public interface ITestDao { void TestFunction(); }
+        [Autowire(Type = typeof(MyService2))]
+        public IMyService MyService2 { get; set; }
 
-        public class TestDao : AdoDaoSupport, ITestDao
-        {
-            public void TestFunction()
-            {
-            }
-        }
+        [Autowire]
+        public MyDao MyDao { get; set; }
 
-        public class TestDao2 : ITestDao
-        {
-            public object AdoTemplate { get; set; }
+        [Autowire]
+        public MyDao2 MyDao2 { get; set; }
+    }
 
-            public void TestFunction()
-            {
-            }
-        }
+    public interface IMyService { }
 
-        public interface ITestService { void TestFunction(); }
+    public class MyService1 : IMyService
+    {
+        public string ValueByReferenceName { get; set; }
+    }
 
-        public interface ITestService2 { }
+    public class MyService2 : IMyService { }
 
-        public interface ITestService3 { }
+    /// <summary>
+    /// AdoDaoSupprot Default
+    /// <para>
+    /// [PropertyValue("AdoTemplate", ObjectReferenceName = "AdoTemplate")]
+    /// </para>
+    /// </summary>
+    public class MyDao : AdoDaoSupport
+    {
+    }
 
-        public class TestService : ITestService
-        {
-            [Autowire]
-            public ITestDao TestDao { get; set; }
-
-            public void TestFunction()
-            {
-                TestDao.TestFunction();
-            }
-        }
-
-        public class TestService2 : ITestService2
-        {
-            [Autowire]
-            public ITestService3 TestService3 { get; set; }
-        }
-
-        public class TestService3 : ITestService3
-        {
-            [Autowire]
-            public ITestService2 TestService2 { get; set; }
-        }
-
-        public interface ITestServiceTran { void Tran(); }
-
-        public class TestServiceTran : ITestServiceTran
-        {
-            [Autowire]
-            public ITestDao TestDao { get; set; }
-
-            [Transaction]
-            public void Tran()
-            {
-            }
-        }
+    public class MyDao2 : AdoDaoSupport
+    {
     }
 }

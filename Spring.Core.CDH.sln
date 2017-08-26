@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Spring.Core.CDH.Autowire", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test", "Test\Test.csproj", "{2B0F3A21-698F-4789-A526-E2AA7D68AA97}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Spring.Core.CDH.Autowire.Mvc", "Spring.Core.CDH.Autowire.Mvc\Spring.Core.CDH.Autowire.Mvc.csproj", "{37FF07D6-2759-484B-8ED4-7B6D5BE81D53}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{2B0F3A21-698F-4789-A526-E2AA7D68AA97}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2B0F3A21-698F-4789-A526-E2AA7D68AA97}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2B0F3A21-698F-4789-A526-E2AA7D68AA97}.Release|Any CPU.Build.0 = Release|Any CPU
+		{37FF07D6-2759-484B-8ED4-7B6D5BE81D53}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{37FF07D6-2759-484B-8ED4-7B6D5BE81D53}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{37FF07D6-2759-484B-8ED4-7B6D5BE81D53}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{37FF07D6-2759-484B-8ED4-7B6D5BE81D53}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

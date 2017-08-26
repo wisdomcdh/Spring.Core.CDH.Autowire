@@ -20,5 +20,10 @@
   <object id="transactionManager2" type="Spring.Data.Core.AdoPlatformTransactionManager, Spring.Data">
     <property name="DbProvider" ref="DbProvider2" />
   </object>
+  <object id="stringValue1" type="System.String">
+    <constructor-arg>
+      <value># StringValue1</value>
+    </constructor-arg>
+  </object>
   <tx:attribute-driven />
 </objects>
