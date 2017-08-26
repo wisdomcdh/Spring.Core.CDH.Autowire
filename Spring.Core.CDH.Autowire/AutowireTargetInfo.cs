@@ -19,8 +19,8 @@ namespace Spring.Core.CDH.Autowire
             Parent = parent;
             PropertyInfo = prop;
             AutowireAttribute = prop.GetCustomAttribute<AutowireAttribute>(false);
-            AutowireContextName = GetAutowireContextName();
             AutowireContextType = GetAutowireContextType();
+            AutowireContextName = GetAutowireContextName();
             IsAdoDaoSupport = GetIsAdoDaoSupport(AutowireContextType);
         }
 
@@ -34,11 +34,11 @@ namespace Spring.Core.CDH.Autowire
             var adoTemplateName = GetAdoTemplateName();
             if (string.IsNullOrEmpty(adoTemplateName))
             {
-                return $"{AutowireContextType.FullName},{adoTemplateName}";
+                return $"{AutowireContextType.FullName}";
             }
             else
             {
-                return AutowireAttribute.ContextName;
+                return $"{AutowireContextType.FullName},{adoTemplateName}";
             }
         }
 
@@ -53,9 +53,7 @@ namespace Spring.Core.CDH.Autowire
                 if (PropertyInfo.PropertyType.IsInterface)
                 {
                     // find inherited class on namespace
-                    return PropertyInfo.PropertyType.Assembly.GetTypes()
-                        .Where(t => t.IsClass && t.Name == PropertyInfo.PropertyType.Namespace && PropertyInfo.PropertyType.IsAssignableFrom(t))
-                        .Single();
+                    return Type.GetType($"{PropertyInfo.PropertyType.Namespace}.{string.Concat(PropertyInfo.PropertyType.Name.Skip(1))}, {PropertyInfo.PropertyType.Assembly.FullName}");
                 }
                 else
                 {
@@ -66,9 +64,9 @@ namespace Spring.Core.CDH.Autowire
 
         private bool GetIsAdoDaoSupport(Type type)
         {
-            while (AutowireContextType != null)
+            while (type != null)
             {
-                if (type.FullName.Equals(SpringAutowire.AdoDaoSupportFullName)) return true;
+                if (type?.FullName == SpringAutowire.AdoDaoSupportFullName) return true;
                 type = type.BaseType;
             }
             return false;

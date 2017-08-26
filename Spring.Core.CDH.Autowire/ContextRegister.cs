@@ -1,9 +1,6 @@
 ﻿using Spring.Context.Support;
 using Spring.Core.IO;
 using Spring.Objects.Factory.Xml;
-using System.IO;
-using System.Xml;
-using System.Xml.Linq;
 
 namespace Spring.Core.CDH.Autowire
 {
@@ -11,18 +8,18 @@ namespace Spring.Core.CDH.Autowire
     {
         private static object _lock = new object();
 
-        public static void RegisterContext(string context, string contextName = SpringAutowire.DefaultRootContextName)
+        public static void RegisterContext(string xmlContext, string rootContextName = SpringAutowire.DefaultRootContextName)
         {
-            if (!ContextRegistry.IsContextRegistered(contextName))
+            if (!ContextRegistry.IsContextRegistered(rootContextName))
             {
                 lock (_lock)
                 {
-                    if (!ContextRegistry.IsContextRegistered(contextName))
+                    if (!ContextRegistry.IsContextRegistered(rootContextName))
                     {
                         GenericApplicationContext ctx = new GenericApplicationContext();
-                        ctx.Name = contextName;
+                        ctx.Name = rootContextName;
                         XmlObjectDefinitionReader reader = new XmlObjectDefinitionReader(ctx);
-                        reader.LoadObjectDefinitions(new StringResource(context));
+                        reader.LoadObjectDefinitions(new StringResource(xmlContext));
                         ContextRegistry.RegisterContext(ctx);
                     }
                 }
