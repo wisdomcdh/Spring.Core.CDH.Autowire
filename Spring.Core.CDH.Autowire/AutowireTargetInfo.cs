@@ -108,11 +108,6 @@ namespace Spring.Core.CDH.Autowire
 
         public string GetAdoTemplateName()
         {
-#if DEBUG
-            string propName = this.PropertyInfo.Name;
-            string parentPropName = Parent?.PropertyInfo?.Name ?? string.Empty;
-            string asdf = "";
-#endif
             string adoTemplateName;
 
             if (IsAdoDaoSupport)
