@@ -108,6 +108,11 @@ namespace Spring.Core.CDH.Autowire
 
         public string GetAdoTemplateName()
         {
+#if DEBUG
+            string propName = this.PropertyInfo.Name;
+            string parentPropName = Parent?.PropertyInfo?.Name ?? string.Empty;
+            string asdf = "";
+#endif
             string adoTemplateName;
 
             if (IsAdoDaoSupport)
@@ -129,9 +134,19 @@ namespace Spring.Core.CDH.Autowire
             if (IsAdoTemplateChangeAttributeSpreadFromParentsOrMe())
             {
                 var adoTemplateChangeAttributeList = GetAdoTemplateChangeAttributeSpreadFromParentsOrMe();
-                if (adoTemplateChangeAttributeList.Any(t => t.Before == adoTemplateName))
+                if (IsAdoDaoSupport)
                 {
-                    adoTemplateName = adoTemplateChangeAttributeList.Single(t => t.Before == adoTemplateName).After;
+                    if (adoTemplateChangeAttributeList.Any(t => t.Before == adoTemplateName))
+                    {
+                        adoTemplateName = adoTemplateChangeAttributeList.Single(t => t.Before == adoTemplateName).After;
+                    }
+                }
+                else
+                {
+                    if (adoTemplateChangeAttributeList.Count > 0)
+                    {
+                        adoTemplateName = string.Join(",", adoTemplateChangeAttributeList.Select(t => t.ToString()));
+                    }
                 }
             }
             return adoTemplateName;

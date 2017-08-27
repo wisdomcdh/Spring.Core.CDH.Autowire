@@ -34,5 +34,10 @@ namespace Spring.Core.CDH.Autowire
             Before = before;
             After = after;
         }
+
+        public override string ToString()
+        {
+            return $"{Before}-{After}";
+        }
     }
 }
