@@ -91,6 +91,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AutowireTest2.cs" />
     <Compile Include="AutowireTest.cs" />
     <Compile Include="ContextRegisterTest.cs" />
     <Compile Include="Dao\MyTable\IMyTableDao.cs" />
@@ -105,6 +106,7 @@
     <Compile Include="Service\MyTable\IMyTableService2.cs" />
     <Compile Include="Service\MyTable\MyTableService.cs" />
     <Compile Include="Service\MyTable\MyTableService2.cs" />
+    <Compile Include="Service\TestModules\TestModule.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -119,33 +121,13 @@
     <Content Include="SpringContext.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="TestDB\TestDB.mdf">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="TestDB\TestDB2.mdf">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="TestDB\TestDB2_log.ldf">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      <DependentUpon>TestDB2.mdf</DependentUpon>
-    </Content>
-    <Content Include="TestDB\TestDB3.mdf">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="TestDB\TestDB3_log.ldf">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      <DependentUpon>TestDB3.mdf</DependentUpon>
-    </Content>
-    <Content Include="TestDB\TestDB_log.ldf">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      <DependentUpon>TestDB.mdf</DependentUpon>
-    </Content>
   </ItemGroup>
   <ItemGroup>
     <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Dao\MyTable\Model\" />
+    <Folder Include="TestDB\" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.5">

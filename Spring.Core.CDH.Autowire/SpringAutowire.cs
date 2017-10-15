@@ -6,6 +6,7 @@ using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 
 namespace Spring.Core.CDH.Autowire
 {
@@ -18,13 +19,31 @@ namespace Spring.Core.CDH.Autowire
 
         public static void Autowire(object obj, string rootContextName = DefaultRootContextName)
         {
-            AbstractApplicationContext ctx = ContextRegistry.GetContext(rootContextName) as AbstractApplicationContext;
+            AbstractApplicationContext ctx = GetApplicationContext(rootContextName);
 
             foreach (AutowireTargetInfo info in GetAutowireTargetInfos(obj.GetType()))
             {
                 CreateObjectDefinition(ctx, info);
                 info.PropertyInfo.SetValue(obj, ctx.GetObject(info.AutowireContextName));
             }
+        }
+
+        public static T Autowire<T>(AutowireAttribute attr = null, string rootContextName = DefaultRootContextName)
+        {
+            AbstractApplicationContext ctx = GetApplicationContext(rootContextName);
+
+            if (attr == null) attr = new AutowireAttribute();
+            return default(T);
+        }
+
+        private static PropertyInfo ConvertToPropertyInfo<T>() where T : class
+        {
+
+        }
+
+        private static AbstractApplicationContext GetApplicationContext(string rootContextName)
+        {
+            return ContextRegistry.GetContext(rootContextName) as AbstractApplicationContext;
         }
 
         private static void CreateObjectDefinition(AbstractApplicationContext ctx, AutowireTargetInfo info)
@@ -81,5 +100,6 @@ namespace Spring.Core.CDH.Autowire
         {
             return type.GetProperties().Where(prop => prop.IsAttributeDefined<AutowireAttribute>()).Select(prop => new AutowireTargetInfo(prop, parent));
         }
+
     }
 }

@@ -5,7 +5,7 @@ using System.Reflection;
 
 namespace Spring.Core.CDH.Autowire
 {
-    public class AutowireTargetInfo
+    internal class AutowireTargetInfo
     {
         private Type _AutowireContextType;
         private string _AutowireContextName;
@@ -56,6 +56,11 @@ namespace Spring.Core.CDH.Autowire
             Parent = parent;
             PropertyInfo = prop;
             AutowireAttribute = prop.GetCustomAttribute<AutowireAttribute>(false);
+        }
+
+        public AutowireTargetInfo(Type type)
+        {
+
         }
 
         private string GetAutowireContextName()

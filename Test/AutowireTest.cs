@@ -3,6 +3,7 @@ using Spring.Core.CDH.Autowire;
 using Test.Dao.MyTable;
 using Test.Service.HelloWorld;
 using Test.Service.MyTable;
+using Test.Service.TestModules;
 
 namespace Test
 {
