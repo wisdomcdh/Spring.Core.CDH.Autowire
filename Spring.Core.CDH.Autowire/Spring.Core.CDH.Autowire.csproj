@@ -58,6 +58,7 @@
     <Compile Include="AutowireAttributes.cs" />
     <Compile Include="AutowireExtends.cs" />
     <Compile Include="AutowireTargetInfo.cs" />
+    <Compile Include="ForcedAutowirePropertyInfo.cs" />
     <Compile Include="SpringAutowire.cs" />
     <Compile Include="ContextRegister.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

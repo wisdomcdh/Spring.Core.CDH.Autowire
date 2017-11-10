@@ -36,11 +36,6 @@ namespace Spring.Core.CDH.Autowire
             return default(T);
         }
 
-        private static PropertyInfo ConvertToPropertyInfo<T>() where T : class
-        {
-
-        }
-
         private static AbstractApplicationContext GetApplicationContext(string rootContextName)
         {
             return ContextRegistry.GetContext(rootContextName) as AbstractApplicationContext;

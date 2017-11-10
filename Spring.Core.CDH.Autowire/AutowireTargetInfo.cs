@@ -26,7 +26,6 @@ namespace Spring.Core.CDH.Autowire
                 return _AutowireContextType;
             }
         }
-
         public string AutowireContextName
         {
             get
@@ -38,7 +37,6 @@ namespace Spring.Core.CDH.Autowire
                 return _AutowireContextName;
             }
         }
-
         public bool IsAdoDaoSupport
         {
             get
@@ -57,12 +55,7 @@ namespace Spring.Core.CDH.Autowire
             PropertyInfo = prop;
             AutowireAttribute = prop.GetCustomAttribute<AutowireAttribute>(false);
         }
-
-        public AutowireTargetInfo(Type type)
-        {
-
-        }
-
+        
         private string GetAutowireContextName()
         {
             if (!string.IsNullOrEmpty(AutowireAttribute.ContextName))
