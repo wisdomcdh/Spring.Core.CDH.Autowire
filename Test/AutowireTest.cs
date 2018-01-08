@@ -127,7 +127,7 @@ namespace Test
         {
             [Autowire]
             [AdoTemplateName("AdoTemplate2")]
-            [AdoTemplateChange("AdoTemplate2", "AdoTemplate3")]
+            [DIchange("AdoTemplate2", "AdoTemplate3")]
             public IMyTableDao MyTableDao { get; set; }
         }
 

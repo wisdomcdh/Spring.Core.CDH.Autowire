@@ -58,10 +58,12 @@
     <Compile Include="AutowireAttributes.cs" />
     <Compile Include="AutowireExtends.cs" />
     <Compile Include="AutowireTargetInfo.cs" />
-    <Compile Include="ForcedAutowirePropertyInfo.cs" />
+    <Compile Include="ObjectInfo.cs" />
     <Compile Include="SpringAutowire.cs" />
     <Compile Include="ContextRegister.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Util\ObjectIdUtil.cs" />
+    <Compile Include="Util\ObjectTypeUtil.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

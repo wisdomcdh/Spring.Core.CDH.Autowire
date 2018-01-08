@@ -150,7 +150,7 @@ namespace Spring.Core.CDH.Autowire
             AutowireTargetInfo info = this;
             while (info != null)
             {
-                if (info.PropertyInfo.IsAttributeDefined<AdoTemplateChangeAttribute>())
+                if (info.PropertyInfo.IsAttributeDefined<DIchangeAttribute>())
                 {
                     return true;
                 }
@@ -159,13 +159,13 @@ namespace Spring.Core.CDH.Autowire
             return false;
         }
 
-        private IList<AdoTemplateChangeAttribute> GetAdoTemplateChangeAttributeSpreadFromParentsOrMe()
+        private IList<DIchangeAttribute> GetAdoTemplateChangeAttributeSpreadFromParentsOrMe()
         {
-            List<AdoTemplateChangeAttribute> result = new List<AdoTemplateChangeAttribute>();
+            List<DIchangeAttribute> result = new List<DIchangeAttribute>();
             AutowireTargetInfo info = this;
             while (info != null)
             {
-                foreach (var attr in info.PropertyInfo.GetCustomAttributes<AdoTemplateChangeAttribute>())
+                foreach (var attr in info.PropertyInfo.GetCustomAttributes<DIchangeAttribute>())
                 {
                     if (!result.Any(t => t.Before == attr.Before))
                     {

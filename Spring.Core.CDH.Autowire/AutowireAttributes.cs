@@ -24,12 +24,12 @@ namespace Spring.Core.CDH.Autowire
     }
 
     [AttributeUsage(AttributeTargets.Property, AllowMultiple = true)]
-    public class AdoTemplateChangeAttribute : Attribute
+    public class DIchangeAttribute : Attribute
     {
         public string Before { get; set; }
         public string After { get; set; }
 
-        public AdoTemplateChangeAttribute(string before, string after)
+        public DIchangeAttribute(string before, string after)
         {
             Before = before;
             After = after;
