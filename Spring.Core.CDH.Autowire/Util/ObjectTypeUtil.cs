@@ -7,36 +7,40 @@ namespace Spring.Core.CDH.Util
     internal static class ObjectTypeUtil
     {
         /// <summary>
-        /// AutowireAttribute 와 이 특성이 정의된 속성의 Type을 분석하여 실제 주입대상 Type을 찾는다.
+        /// 주입대상 Type
+        /// AutowireAttribute 특성이 선언된 Type을 분석하여 실제 주입대상 Type을 찾는다.
         /// </summary>
         /// <param name="autowireAttribute"></param>
-        /// <param name="ownedType">주입대상 객체의 소유자의 타입</param>
-        /// <returns>주입대상 실제 Type</returns>
+        /// <param name="ownedType">AutowireAttribute 특성 소유자의 타입</param>
+        /// <returns>주입대상 Type</returns>
         public static Type GetObjectType(AutowireAttribute autowireAttribute, Type ownedType)
         {
-            if (autowireAttribute.Type == null)
+            // 특성에 타입지정이 되어 있으면 그것을 리턴
+            if (autowireAttribute.Type != null)
             {
+                return autowireAttribute.Type;
+            }
+            else
+            {
+                // 특성 소유자의 타입이 인터페이스인 경우 소유자의 namespace 에서 실제 주입대상 Type을 찾는다.
                 if (ownedType.IsInterface)
                 {
-                    // interface 이며 AutowireAttribute 에 Type이 지정되지 않은경우 해당 interface의 위치에서 'I' 를 뺀 클래스를 찾아 리턴한다.
-                    var likelyType = Type.GetType($"{ownedType.Namespace}.{string.Concat(ownedType.Name.Skip(1))}, {ownedType.Assembly.FullName}");
-                    if (likelyType != null)
+                    // 1. interface의 이름이 i 로 시작하는 경우 i를 제외한 이름의 대상을 찾는다.
+                    if (ownedType.Name.StartsWith("i", StringComparison.OrdinalIgnoreCase))
                     {
-                        if (ownedType.IsAssignableFrom(likelyType))
+                        Type like = Type.GetType($"{ownedType.Namespace}.{string.Concat(ownedType.Name.Skip(1))}, {ownedType.Assembly.FullName}");
+                        if (like != null && ownedType.IsAssignableFrom(like))
                         {
-                            return likelyType;
+                            return like;
                         }
                     }
                     return null;
                 }
                 else
                 {
+                    // 인터페이스가 아닌경우 소유자의 타입 그대로 리턴
                     return ownedType;
                 }
-            }
-            else
-            {
-                return autowireAttribute.Type;
             }
         }
 

@@ -16,12 +16,12 @@ namespace Test.Service.MyTable
         public IMyTableService MyTableService { get; set; }
 
         [Autowire(Type = typeof(MyTableService))]
-        [DIchange("AdoTemplate", "AdoTemplate3")]
+        [ChangeWire("AdoTemplate", "AdoTemplate3")]
         public IMyTableService MyTableService_AdoTemplateChange { get; set; }
 
         [Autowire(Type = typeof(MyTableService2))]
-        [DIchange("AdoTemplate", "AdoTemplate2")]
-        [DIchange("AdoTemplate3", "AdoTemplate2")]
+        [ChangeWire("AdoTemplate", "AdoTemplate2")]
+        [ChangeWire("AdoTemplate3", "AdoTemplate2")]
         public IMyTableService2 MyTableService2_Recursive_AdoTemplateChange { get; set; }
     }
 }

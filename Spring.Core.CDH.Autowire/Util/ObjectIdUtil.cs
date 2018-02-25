@@ -7,7 +7,7 @@ namespace Spring.Core.CDH.Util
 {
     internal static class ObjectIdUtil
     {
-        public static string GetObjectId(AutowireAttribute autowireAttribute, Type objectType, IList<DIchangeAttribute> diChangeAttrList)
+        public static string GetObjectId(AutowireAttribute autowireAttribute, Type objectType, IList<ChangeWireAttribute> diChangeAttrList)
         {
             if (!string.IsNullOrEmpty(autowireAttribute.ContextName))
             {
