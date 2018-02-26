@@ -1,4 +1,5 @@
 ﻿using Spring.Context.Support;
+using Spring.Core.CDH.Util;
 using Spring.Objects;
 using Spring.Objects.Factory.Config;
 using Spring.Objects.Factory.Support;
@@ -6,7 +7,6 @@ using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 
 namespace Spring.Core.CDH.Autowire
 {
@@ -21,19 +21,19 @@ namespace Spring.Core.CDH.Autowire
         {
             AbstractApplicationContext ctx = GetApplicationContext(rootContextName);
 
-            foreach (AutowireTargetInfo info in GetAutowireTargetInfos(obj.GetType()))
+            foreach (AutowireTargetPropertyInfo info in GetAutowireTargetPropertyInfo(obj.GetType()))
             {
                 CreateObjectDefinition(ctx, info);
-                info.PropertyInfo.SetValue(obj, ctx.GetObject(info.AutowireContextName));
+                info.PropertyInfo.SetValue(obj, ctx.GetObject(info.ObjectInfo.id));
             }
         }
 
-        public static T Autowire<T>(AutowireAttribute attr = null, string rootContextName = DefaultRootContextName)
+        public static object Autowire(Type type, AutowireAttribute autowireAttribute, string rootContextName = DefaultRootContextName)
         {
             AbstractApplicationContext ctx = GetApplicationContext(rootContextName);
-
-            if (attr == null) attr = new AutowireAttribute();
-            return default(T);
+            var info = new AutowireTargetPropertyInfo(autowireAttribute, type);
+            CreateObjectDefinition(ctx, info);
+            return ctx.GetObject(info.ObjectInfo.id);
         }
 
         private static AbstractApplicationContext GetApplicationContext(string rootContextName)
@@ -41,60 +41,58 @@ namespace Spring.Core.CDH.Autowire
             return ContextRegistry.GetContext(rootContextName) as AbstractApplicationContext;
         }
 
-        private static void CreateObjectDefinition(AbstractApplicationContext ctx, AutowireTargetInfo info)
+        private static void CreateObjectDefinition(AbstractApplicationContext ctx, AutowireTargetPropertyInfo info)
         {
-            if (!ctx.IsObjectNameInUse(info.AutowireContextName))
+            if (!ctx.IsObjectNameInUse(info.ObjectInfo.id))
             {
                 object lockObj, lockObjCheck;
-                lock (lockObj = _lockMap.GetOrAdd(info.AutowireContextName, new object()))
+                lock (lockObj = _lockMap.GetOrAdd(info.ObjectInfo.id, new object()))
                 {
-                    if (!ctx.IsObjectNameInUse(info.AutowireContextName))
+                    if (!ctx.IsObjectNameInUse(info.ObjectInfo.id))
                     {
                         IObjectDefinition objectDefinition = GetOrCreateObjectDefinition(ctx, info);
                         PropertyValue pv;
-                        foreach (AutowireTargetInfo inInfo in GetAutowireTargetInfos(info.AutowireContextType, info))
+                        foreach (AutowireTargetPropertyInfo inInfo in GetAutowireTargetPropertyInfo(info.ObjectInfo.GetObjectType(), info))
                         {
                             pv = objectDefinition.PropertyValues.PropertyValues.FirstOrDefault(t => t.Name == inInfo.PropertyInfo.Name);
                             if (pv == null)
                             {
                                 CreateObjectDefinition(ctx, inInfo);
-                                objectDefinition.PropertyValues.Add(inInfo.PropertyInfo.Name, new RuntimeObjectReference(inInfo.AutowireContextName));
+                                objectDefinition.PropertyValues.Add(inInfo.PropertyInfo.Name, new RuntimeObjectReference(inInfo.ObjectInfo.id));
                             }
                         }
 
-                        if (info.IsAdoDaoSupport)
+                        if (ObjectTypeUtil.IsInheritOfAdoDaoSupport(info.ObjectInfo.GetObjectType()))
                         {
                             if (!objectDefinition.PropertyValues.Contains("AdoTemplate"))
                             {
-                                objectDefinition.PropertyValues.Add("AdoTemplate", new RuntimeObjectReference(info.GetAdoTemplateName()));
+                                objectDefinition.PropertyValues.Add("AdoTemplate", new RuntimeObjectReference(info.ObjectInfo.GetAdoTemplateName()));
                             }
                         }
                     }
-                    _lockMap.TryRemove(info.AutowireContextName, out lockObjCheck);
+                    _lockMap.TryRemove(info.ObjectInfo.id, out lockObjCheck);
                 }
             }
         }
 
-        private static IObjectDefinition GetOrCreateObjectDefinition(AbstractApplicationContext ctx, AutowireTargetInfo info)
+        private static IObjectDefinition GetOrCreateObjectDefinition(AbstractApplicationContext ctx, AutowireTargetPropertyInfo info)
         {
-            if (ctx.IsObjectNameInUse(info.AutowireContextName))
+            if (ctx.IsObjectNameInUse(info.ObjectInfo.id))
             {
-                return ctx.GetObjectDefinition(info.AutowireContextName);
+                return ctx.GetObjectDefinition(info.ObjectInfo.id);
             }
             else
             {
-                AbstractObjectDefinition objectDefinition = fac.CreateObjectDefinition(info.AutowireContextType.AssemblyQualifiedName, null, AppDomain.CurrentDomain);
-                objectDefinition.IsSingleton = info.AutowireAttribute.Singleton;
-
-                ctx.ObjectFactory.RegisterObjectDefinition(info.AutowireContextName, objectDefinition);
-                return ctx.GetObjectDefinition(info.AutowireContextName);
+                AbstractObjectDefinition objectDefinition = fac.CreateObjectDefinition(info.ObjectInfo.type, null, AppDomain.CurrentDomain);
+                objectDefinition.IsSingleton = info.ObjectInfo.singleton;
+                ctx.ObjectFactory.RegisterObjectDefinition(info.ObjectInfo.id, objectDefinition);
+                return ctx.GetObjectDefinition(info.ObjectInfo.id);
             }
         }
 
-        private static IEnumerable<AutowireTargetInfo> GetAutowireTargetInfos(Type type, AutowireTargetInfo parent = null)
+        private static IEnumerable<AutowireTargetPropertyInfo> GetAutowireTargetPropertyInfo(Type type, AutowireTargetPropertyInfo parent = null)
         {
-            return type.GetProperties().Where(prop => prop.IsAttributeDefined<AutowireAttribute>()).Select(prop => new AutowireTargetInfo(prop, parent));
+            return type.GetProperties().Where(prop => prop.IsAttributeDefined<AutowireAttribute>()).Select(prop => new AutowireTargetPropertyInfo(prop, parent));
         }
-
     }
 }

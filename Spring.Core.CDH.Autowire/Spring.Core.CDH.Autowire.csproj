@@ -57,7 +57,7 @@
   <ItemGroup>
     <Compile Include="AutowireAttributes.cs" />
     <Compile Include="AutowireExtends.cs" />
-    <Compile Include="AutowireTargetInfo.cs" />
+    <Compile Include="AutowireTargetPropertyInfo.cs" />
     <Compile Include="ObjectInfo.cs" />
     <Compile Include="SpringAutowire.cs" />
     <Compile Include="ContextRegister.cs" />

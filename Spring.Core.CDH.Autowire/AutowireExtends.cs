@@ -18,6 +18,11 @@ namespace Spring.Core.CDH
             return Attribute.GetCustomAttribute(element, typeof(AutowireAttribute)) as AutowireAttribute;
         }
 
+        public static AdoTemplateNameAttribute GetAdoTemplateNameAttribute(this MemberInfo element)
+        {
+            return Attribute.GetCustomAttribute(element, typeof(AdoTemplateNameAttribute)) as AdoTemplateNameAttribute;
+        }
+
         public static IList<ChangeAdoTemplateAttribute> GetChangeAdoTemplateAttributes(this MemberInfo element)
         {
             return Attribute.GetCustomAttributes(element, typeof(ChangeAdoTemplateAttribute)).Cast<ChangeAdoTemplateAttribute>().ToList();

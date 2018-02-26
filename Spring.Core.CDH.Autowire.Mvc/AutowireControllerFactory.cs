@@ -5,19 +5,19 @@ namespace Spring.Core.CDH.Autowire
 {
     public class AutowireControllerFactory : DefaultControllerFactory
     {
-        private static object _lock = new object();
         private string rootContextName;
+        private AutowireAttribute controllerAutowireAttribute;
 
         public AutowireControllerFactory(string contextName = SpringAutowire.DefaultRootContextName)
         {
             rootContextName = contextName;
+            controllerAutowireAttribute = new AutowireAttribute { Singleton = false };
         }
 
         public override IController CreateController(RequestContext requestContext, string controllerName)
         {
-            var controller = base.CreateController(requestContext, controllerName);
-            SpringAutowire.Autowire(controller, rootContextName);
-            return controller;
+            var type = base.GetControllerType(requestContext, controllerName);
+            return (IController)SpringAutowire.Autowire(type, controllerAutowireAttribute, rootContextName);
         }
     }
 }

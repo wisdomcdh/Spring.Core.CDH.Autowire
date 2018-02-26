@@ -2,6 +2,7 @@
 using Spring.Core.CDH.Util;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 
 namespace Spring.Core.CDH
@@ -10,9 +11,10 @@ namespace Spring.Core.CDH
     {
         public string id { get; private set; }
         public bool singleton { get; private set; }
-        public string type { get { return ObjectType.AssemblyQualifiedName; } }
+        public string type { get; private set; }
         protected ObjectInfo Parent { get; private set; }
         protected AutowireAttribute ObjectAutowireAttribute { get; private set; }
+        protected AdoTemplateNameAttribute ObjectAdoTemplateNameAttribute { get; private set; }
         protected Type ObjectType { get; private set; }
         protected IList<ChangeAdoTemplateAttribute> ChangeAdoTemplateAttributes { get; private set; }
         protected IList<ChangeWireAttribute> ChangeWireAttributes { get; private set; }
@@ -21,65 +23,63 @@ namespace Spring.Core.CDH
         {
             Parent = parent;
             ObjectAutowireAttribute = prop.GetAutowireAttribute();
+            ObjectAdoTemplateNameAttribute = prop.GetAdoTemplateNameAttribute();
             ObjectType = ObjectTypeUtil.GetObjectType(ObjectAutowireAttribute, prop.PropertyType);
             ChangeAdoTemplateAttributes = prop.GetChangeAdoTemplateAttributes();
             ChangeWireAttributes = prop.GetChangeWireAttributes();
+
+            id = ObjectIdUtil.GetObjectId(this);
+            type = ObjectTypeUtil.GetShortAssemblyName(ObjectType);
+            singleton = ObjectAutowireAttribute.Singleton;
         }
 
         public ObjectInfo(AutowireAttribute autowireAttribute, Type objectType)
         {
             ObjectAutowireAttribute = autowireAttribute;
+            ObjectAdoTemplateNameAttribute = objectType.GetAdoTemplateNameAttribute();
             ObjectType = ObjectTypeUtil.GetObjectType(ObjectAutowireAttribute, objectType);
             ChangeAdoTemplateAttributes = new List<ChangeAdoTemplateAttribute>();
             ChangeWireAttributes = new List<ChangeWireAttribute>();
+
+            id = ObjectIdUtil.GetObjectId(this);
+            type = ObjectTypeUtil.GetShortAssemblyName(ObjectType);
+            singleton = ObjectAutowireAttribute.Singleton;
         }
 
-        //public ObjectInfo(ObjectInfo parent, object @class)
-        //{
-        //    Parent = parent;
-        //    type = ObjectTypeUtil.GetObjectType(null, @class.GetType());
+        public AutowireAttribute GetAutowireAttribute()
+        {
+            return ObjectAutowireAttribute;
+        }
 
-        //}
+        public Type GetObjectType()
+        {
+            return ObjectType;
+        }
 
-        //public ObjectInfo(AutowireAttribute autowireAttribute,
-        //    Type ownedType,
-        //    IList<DIchangeAttribute> diChangeArrtList,
-        //    ObjectInfo ownedObjectInfo)
-        //{
-        //    Parent = ownedObjectInfo;
-        //    OwnedType = ownedType;
-        //    AutowireAttribute = autowireAttribute;
-        //    this.diChangeArrtList = diChangeArrtList;
+        public string GetAdoTemplateName()
+        {
+            var adoTemplateName = ObjectAdoTemplateNameAttribute?.AdoTemplateName ?? "AdoTemplate";
+            var change = ChangeAdoTemplateAttributes.FirstOrDefault(t => adoTemplateName.Equals(t.Before, StringComparison.OrdinalIgnoreCase));
+            if (change != null)
+            {
+                return change.After;
+            }
+            else
+            {
+                return adoTemplateName;
+            }
+        }
 
-        //    SetObjectTypeAndName();
-        //    SetObjectId();
-        //}
-
-        //private void SetObjectTypeAndName()
-        //{
-        //    ObjectType = ObjectTypeUtil.GetObjectType(AutowireAttribute, OwnedType);
-        //    ObjectTypeName = ObjectType.AssemblyQualifiedName;
-        //}
-
-        //private void SetObjectId()
-        //{
-        //    ObjectId = ObjectIdUtil.GetObjectId(AutowireAttribute, ObjectType, GetAllDichangeAttrList(this));
-        //}
-
-        //private IList<DIchangeAttribute> GetAllDichangeAttrList(ObjectInfo objectInfo)
-        //{
-        //    IList<DIchangeAttribute> allList = new List<DIchangeAttribute>();
-        //    DIchangeAttribute attr;
-        //    while (objectInfo != null)
-        //    {
-        //        for (int i = 0; i < objectInfo.diChangeArrtList.Count; i++)
-        //        {
-        //            attr = diChangeArrtList[i];
-        //            if (!allList.Any(t => t.Before == attr.Before)) allList.Add(attr);
-        //        }
-        //        objectInfo = objectInfo.Parent;
-        //    }
-        //    return allList;
-        //}
+        public string GetChangeWireName()
+        {
+            IEnumerable<string> change = new List<string>();
+            var info = this;
+            while (info != null)
+            {
+                change = change.Union(info.ChangeWireAttributes.Select(t => t.ToString()));
+                info = info.Parent;
+            }
+            return string.Join(",", change);
+        }
     }
 }

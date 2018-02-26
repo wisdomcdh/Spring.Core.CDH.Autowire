@@ -57,5 +57,10 @@ namespace Spring.Core.CDH.Util
             }
             return false;
         }
+
+        public static string GetShortAssemblyName(Type type)
+        {
+            return $"{type.FullName}, {type.Assembly.GetName().Name}";
+        }
     }
 }
