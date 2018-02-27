@@ -28,9 +28,9 @@ namespace Spring.Core.CDH
             ChangeAdoTemplateAttributes = prop.GetChangeAdoTemplateAttributes();
             ChangeWireAttributes = prop.GetChangeWireAttributes();
 
-            id = ObjectIdUtil.GetObjectId(this);
             type = ObjectTypeUtil.GetShortAssemblyName(ObjectType);
             singleton = ObjectAutowireAttribute.Singleton;
+            id = ObjectIdUtil.GetObjectId(this);
         }
 
         public ObjectInfo(AutowireAttribute autowireAttribute, Type objectType)
@@ -41,9 +41,9 @@ namespace Spring.Core.CDH
             ChangeAdoTemplateAttributes = new List<ChangeAdoTemplateAttribute>();
             ChangeWireAttributes = new List<ChangeWireAttribute>();
 
-            id = ObjectIdUtil.GetObjectId(this);
             type = ObjectTypeUtil.GetShortAssemblyName(ObjectType);
             singleton = ObjectAutowireAttribute.Singleton;
+            id = ObjectIdUtil.GetObjectId(this);
         }
 
         public AutowireAttribute GetAutowireAttribute()
@@ -59,15 +59,18 @@ namespace Spring.Core.CDH
         public string GetAdoTemplateName()
         {
             var adoTemplateName = ObjectAdoTemplateNameAttribute?.AdoTemplateName ?? "AdoTemplate";
-            var change = ChangeAdoTemplateAttributes.FirstOrDefault(t => adoTemplateName.Equals(t.Before, StringComparison.OrdinalIgnoreCase));
-            if (change != null)
+            var info = this;
+            ChangeAdoTemplateAttribute attr;
+            while (info != null)
             {
-                return change.After;
+                attr = info.ChangeAdoTemplateAttributes.FirstOrDefault(t => adoTemplateName.Equals(t.Before, StringComparison.OrdinalIgnoreCase));
+                if (attr != null)
+                {
+                    return attr.After;
+                }
+                info = info.Parent;
             }
-            else
-            {
-                return adoTemplateName;
-            }
+            return adoTemplateName;
         }
 
         public string GetChangeWireName()
@@ -76,10 +79,27 @@ namespace Spring.Core.CDH
             var info = this;
             while (info != null)
             {
-                change = change.Union(info.ChangeWireAttributes.Select(t => t.ToString()));
+                change = change.Union(info.ChangeWireAttributes.Select(t => t.ToString()))
+                    .Union(info.ChangeAdoTemplateAttributes.Select(t => t.ToString()));
                 info = info.Parent;
             }
             return string.Join(",", change);
+        }
+
+        public string GetChangeWireContextName(string beforeContextName)
+        {
+            var info = this;
+            ChangeWireAttribute attr;
+            while (info != null)
+            {
+                attr = info.ChangeWireAttributes.FirstOrDefault(t => t.Before == beforeContextName);
+                if (attr != null)
+                {
+                    return attr.After;
+                }
+                info = info.Parent;
+            }
+            return beforeContextName;
         }
     }
 }

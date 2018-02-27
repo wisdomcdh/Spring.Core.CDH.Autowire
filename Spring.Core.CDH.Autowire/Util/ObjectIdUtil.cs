@@ -10,12 +10,12 @@ namespace Spring.Core.CDH.Util
             AutowireAttribute autowireAttribute = info.GetAutowireAttribute();
             if (!string.IsNullOrEmpty(autowireAttribute.ContextName))
             {
-                return autowireAttribute.ContextName;
+                return info.GetChangeWireContextName(autowireAttribute.ContextName);
             }
             else
             {
                 Type objectType = info.GetObjectType();
-                string name = ObjectTypeUtil.GetShortAssemblyName(objectType);
+                string name = $"[{info.singleton}]{ObjectTypeUtil.GetShortAssemblyName(objectType)}";
 
                 if (ObjectTypeUtil.IsInheritOfAdoDaoSupport(objectType))
                 {
