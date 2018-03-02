@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>Spring.Core.CDH.Autowire</id>
+    <version>0.1.1</version>
+    <title>Spring.Core.CDH.Autowire</title>
+    <authors>wisdomcdh@gmail.com</authors>
+    <owners>wisdomcdh@gmail.com</owners>
+    <licenseUrl>https://github.com/wisdomcdh/Spring.Core.CDH.Autowire</licenseUrl>
+    <projectUrl>https://github.com/wisdomcdh/Spring.Core.CDH.Autowire</projectUrl>
+    <iconUrl>https://github.com/wisdomcdh/Spring.Core.CDH.Autowire</iconUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Spring.Net Autowire</description>
+    <releaseNotes>Do not use this libray yet. it is just incubated</releaseNotes>
+    <copyright>Copyright 2017</copyright>
+    <tags></tags>
+	<dependencies>
+      <dependency id="Spring.Core" version="2.0.1" />
+    </dependencies>
+  </metadata>
+</package>
