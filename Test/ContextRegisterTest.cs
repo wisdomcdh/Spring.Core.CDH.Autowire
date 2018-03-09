@@ -5,7 +5,7 @@ using System.IO;
 namespace Test
 {
     [TestFixture]
-    public class ContextRegisterTest
+    public abstract class ContextRegisterTest
     {
         protected string conn { get; private set; }
         protected string conn2 { get; private set; }
@@ -30,13 +30,9 @@ namespace Test
             ContextRegister.RegisterContext(context);
         }
 
-        [Test]
-        public void RegisterContext()
-        {
-        }
-
         private string xmlContext = @"<?xml version=""1.0"" encoding=""utf-8"" ?>
 <objects xmlns=""http://www.springframework.net""
+         xmlns:aop=""http://www.springframework.net/aop""
          xmlns:db=""http://www.springframework.net/database""
          xmlns:tx=""http://www.springframework.net/tx"">
     <db:provider id=""DbProvider"" provider=""System.Data.SqlClient"" connectionString=""{0}"" />
@@ -69,6 +65,12 @@ namespace Test
     <object id=""transactionManager2"" type=""Spring.Data.Core.AdoPlatformTransactionManager, Spring.Data"">
         <property name=""DbProvider"" ref=""DbProvider2"" />
     </object>
+    <object id=""transactionManager3"" type=""Spring.Data.Core.AdoPlatformTransactionManager, Spring.Data"">
+        <property name=""DbProvider"" ref=""DbProvider3"" />
+    </object>
+    <object id=""transactionManager4"" type=""Spring.Data.Core.AdoPlatformTransactionManager, Spring.Data"">
+        <property name=""DbProvider"" ref=""DbProvider4"" />
+    </object>
     <object id=""String1"" type=""System.String"" >
         <constructor-arg value=""Text1"" />
     </object>
@@ -78,7 +80,16 @@ namespace Test
     <object id=""ChangeString"" type=""System.String"" >
         <constructor-arg value=""ChangeText1"" />
     </object>
-    <tx:attribute-driven />
+    <object id=""tranMyTableDao"" type=""Test.Dao.MyTable.MyTableDao, Spring.CDH.Test"">
+        <property name=""AdoTemplate"" ref=""AdoTemplate"" />
+    </object>
+    <object id=""tranTest"" type=""Test.Service.MyTable.TransactionMyTableService, Spring.CDH.Test"">
+        <property name=""MyTableDao"" ref=""tranMyTableDao"" />
+    </object>
+    <tx:attribute-driven transaction-manager=""transactionManager""/>
+    <tx:attribute-driven transaction-manager=""transactionManager2""/>
+    <tx:attribute-driven transaction-manager=""transactionManager3""/>
+    <tx:attribute-driven transaction-manager=""transactionManager4""/>
 </objects>";
     }
 }

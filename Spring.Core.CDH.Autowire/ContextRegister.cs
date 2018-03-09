@@ -1,6 +1,5 @@
 ﻿using Spring.Context.Support;
 using Spring.Core.IO;
-using Spring.Objects.Factory.Xml;
 
 namespace Spring.Core.CDH.Autowire
 {
@@ -16,10 +15,11 @@ namespace Spring.Core.CDH.Autowire
                 {
                     if (!ContextRegistry.IsContextRegistered(rootContextName))
                     {
-                        GenericApplicationContext ctx = new GenericApplicationContext();
-                        ctx.Name = rootContextName;
-                        XmlObjectDefinitionReader reader = new XmlObjectDefinitionReader(ctx);
-                        reader.LoadObjectDefinitions(new StringResource(xmlContext));
+                        XmlApplicationContext ctx = new XmlApplicationContext(new XmlApplicationContextArgs
+                        {
+                            Name = rootContextName,
+                            ConfigurationResources = new IResource[] { new StringResource(xmlContext) }
+                        });
                         ContextRegistry.RegisterContext(ctx);
                     }
                 }
