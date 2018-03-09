@@ -2,7 +2,7 @@
 
 namespace Spring.Core.CDH.Autowire
 {
-    [AttributeUsage(AttributeTargets.Property)]
+    [AttributeUsage(AttributeTargets.Property | AttributeTargets.Class)]
     public class AutowireAttribute : Attribute
     {
         public string ContextName { get; set; }
