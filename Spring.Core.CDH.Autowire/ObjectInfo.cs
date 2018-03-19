@@ -101,5 +101,15 @@ namespace Spring.Core.CDH
             }
             return beforeContextName;
         }
+
+        public bool HasMergeContextName()
+        {
+            return !string.IsNullOrEmpty(ObjectAutowireAttribute.MergeContextName);
+        }
+
+        public string GetMergeContextName()
+        {
+            return ObjectAutowireAttribute.MergeContextName;
+        }
     }
 }
