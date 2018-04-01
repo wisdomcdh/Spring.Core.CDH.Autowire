@@ -86,6 +86,9 @@ namespace Test
     <object id=""tranTest"" type=""Test.Service.MyTable.TransactionMyTableService, Spring.CDH.Test"">
         <property name=""MyTableDao"" ref=""tranMyTableDao"" />
     </object>
+    <object id=""MERGE_AutowireMergeTestInnerClass"" type=""Test.AutowireMergeTestInnerClass, Spring.CDH.Test"">
+        <property name=""Str1"" value=""MERGE_STR1"" />
+    </object>
     <tx:attribute-driven transaction-manager=""transactionManager""/>
     <tx:attribute-driven transaction-manager=""transactionManager2""/>
     <tx:attribute-driven transaction-manager=""transactionManager3""/>

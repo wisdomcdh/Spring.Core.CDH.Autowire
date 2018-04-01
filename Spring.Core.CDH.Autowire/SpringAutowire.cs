@@ -1,6 +1,5 @@
 ﻿using Spring.Context.Support;
 using Spring.Core.CDH.Util;
-using Spring.Objects;
 using Spring.Objects.Factory.Config;
 using Spring.Objects.Factory.Support;
 using System;
@@ -50,12 +49,30 @@ namespace Spring.Core.CDH.Autowire
                 {
                     if (!ctx.IsObjectNameInUse(info.ObjectInfo.id))
                     {
+                        IObjectDefinition mergeTargetObjectDefinition = null;
                         IObjectDefinition objectDefinition = GetOrCreateObjectDefinition(ctx, info);
-                        PropertyValue pv;
+                        bool hasMergeContext = false;
+                        if (info.ObjectInfo.HasMergeContextName() && ctx.IsObjectNameInUse(info.ObjectInfo.GetMergeContextName()))
+                        {
+                            hasMergeContext = true;
+                            mergeTargetObjectDefinition = ctx.GetObjectDefinition(info.ObjectInfo.GetMergeContextName());
+                        }
+
                         foreach (AutowireTargetPropertyInfo inInfo in GetAutowireTargetPropertyInfo(info.ObjectInfo.GetObjectType(), info))
                         {
-                            pv = objectDefinition.PropertyValues.PropertyValues.FirstOrDefault(t => t.Name == inInfo.PropertyInfo.Name);
-                            if (pv == null)
+                            if (hasMergeContext)
+                            {
+                                if (mergeTargetObjectDefinition.PropertyValues.Contains(inInfo.PropertyInfo.Name))
+                                {
+                                    if (objectDefinition.PropertyValues.Contains(inInfo.PropertyInfo.Name))
+                                    {
+                                        objectDefinition.PropertyValues.Remove(objectDefinition.PropertyValues.GetPropertyValue(inInfo.PropertyInfo.Name));
+                                    }
+                                    objectDefinition.PropertyValues.Add(mergeTargetObjectDefinition.PropertyValues.GetPropertyValue(inInfo.PropertyInfo.Name));
+                                }
+                            }
+
+                            if (!objectDefinition.PropertyValues.Contains(inInfo.PropertyInfo.Name))
                             {
                                 CreateObjectDefinition(ctx, inInfo);
                                 objectDefinition.PropertyValues.Add(inInfo.PropertyInfo.Name, new RuntimeObjectReference(inInfo.ObjectInfo.id));
