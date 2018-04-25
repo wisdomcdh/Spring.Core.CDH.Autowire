@@ -8,5 +8,9 @@ namespace Test.Dao.MyTable
         IList<MyTableItem> GetAll();
 
         string GetConnectionString();
+
+        int Insert(MyTableItem item);
+
+        MyTableItem FindItem(int id);
     }
 }

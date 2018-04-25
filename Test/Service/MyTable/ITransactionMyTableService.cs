@@ -1,4 +1,5 @@
 ﻿using Test.Dao.MyTable;
+using Test.Dao.MyTable.Model;
 
 namespace Test.Service.MyTable
 {
@@ -7,5 +8,6 @@ namespace Test.Service.MyTable
         IMyTableDao MyTableDao { get; set; }
 
         void TestTransaction();
+        void TestInsert(MyTableItem item);
     }
 }

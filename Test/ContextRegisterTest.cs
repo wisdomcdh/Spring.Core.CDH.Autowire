@@ -1,5 +1,8 @@
 ﻿using NUnit.Framework;
+using Spring.Context.Support;
 using Spring.Core.CDH.Autowire;
+using Spring.Data.Core;
+using Spring.Transaction.Interceptor;
 using System.IO;
 
 namespace Test
@@ -15,6 +18,7 @@ namespace Test
         [OneTimeSetUp]
         public void OneTimeSetUp()
         {
+            //Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=D:\DEV\Spring.Core.CDH.Autowire\Test\TestDB.mdf;Integrated Security=True
             var path = Path.GetDirectoryName(typeof(ContextRegisterTest).Assembly.Location);
             var connFormat = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename={0};Integrated Security=True";
             var testDb = Path.Combine(path, "TestDB.mdf");
@@ -28,6 +32,15 @@ namespace Test
 
             var context = string.Format(xmlContext, conn, conn2, conn3, conn4);
             ContextRegister.RegisterContext(context);
+        }
+
+        [TearDown]
+        public void TearDown()
+        {
+            
+            //AdoPlatformTransactionManager tm = ctx.GetObject("transactionManager");
+            //tm.GetTransaction();
+            //tm.Rollback()
         }
 
         private string xmlContext = @"<?xml version=""1.0"" encoding=""utf-8"" ?>

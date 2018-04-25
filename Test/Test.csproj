@@ -146,7 +146,32 @@
       <Install>false</Install>
     </BootstrapperPackage>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Content Include="TestDB4.mdf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestDB4_log.ldf">
+      <DependentUpon>TestDB4.mdf</DependentUpon>
+    </Content>
+    <Content Include="TestDB3.mdf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestDB3_log.ldf">
+      <DependentUpon>TestDB3.mdf</DependentUpon>
+    </Content>
+    <Content Include="TestDB2.mdf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestDB2_log.ldf">
+      <DependentUpon>TestDB2.mdf</DependentUpon>
+    </Content>
+    <Content Include="TestDB.mdf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestDB_log.ldf">
+      <DependentUpon>TestDB.mdf</DependentUpon>
+    </Content>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
