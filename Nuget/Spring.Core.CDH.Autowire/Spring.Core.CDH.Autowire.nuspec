@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>Spring.Core.CDH.Autowire</id>
-    <version>0.1.2</version>
+    <version>0.1.3</version>
     <title>Spring.Core.CDH.Autowire</title>
     <authors>wisdomcdh@gmail.com</authors>
     <owners>wisdomcdh@gmail.com</owners>

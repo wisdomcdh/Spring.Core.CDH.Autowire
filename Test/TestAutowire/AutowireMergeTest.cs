@@ -16,7 +16,7 @@ namespace Test
 
     public class AutowireMergeTestClass
     {
-        [Autowire(MergeContextName = "MERGE_AutowireMergeTestInnerClass")]
+        [Autowire(MergeBase = "MERGE_AutowireMergeTestInnerClass")]
         public AutowireMergeTestInnerClass AutowireMergeTestInnerClass { get; set; }
     }
 

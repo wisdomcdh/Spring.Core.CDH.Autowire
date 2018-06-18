@@ -6,15 +6,9 @@ namespace Spring.Core.CDH.Autowire
     public class AutowireAttribute : Attribute
     {
         public string ContextName { get; set; }
-        public string MergeContextName { get; set; }
+        public string MergeBase { get; set; }
         public Type Type { get; set; }
         public bool Singleton { get; set; } = true;
-    }
-
-    [AttributeUsage(AttributeTargets.Property)]
-    public class AutowireMAttribute : AutowireAttribute
-    {
-        public string MergeBase { get; set; }
     }
 
     [AttributeUsage(AttributeTargets.Property)]

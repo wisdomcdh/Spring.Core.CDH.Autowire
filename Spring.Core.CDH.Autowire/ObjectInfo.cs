@@ -104,12 +104,12 @@ namespace Spring.Core.CDH
 
         public bool HasMergeContextName()
         {
-            return !string.IsNullOrEmpty(ObjectAutowireAttribute.MergeContextName);
+            return !string.IsNullOrEmpty(ObjectAutowireAttribute.MergeBase);
         }
 
         public string GetMergeContextName()
         {
-            return ObjectAutowireAttribute.MergeContextName;
+            return ObjectAutowireAttribute.MergeBase;
         }
     }
 }
