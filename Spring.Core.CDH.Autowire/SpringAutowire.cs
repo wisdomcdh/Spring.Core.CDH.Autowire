@@ -44,8 +44,7 @@ namespace Spring.Core.CDH.Autowire
         {
             if (!ctx.IsObjectNameInUse(info.ObjectInfo.id))
             {
-                object lockObj, lockObjCheck;
-                lock (lockObj = _lockMap.GetOrAdd(info.ObjectInfo.id, new object()))
+                lock (_lockMap.GetOrAdd(info.ObjectInfo.id, new object()))
                 {
                     if (!ctx.IsObjectNameInUse(info.ObjectInfo.id))
                     {
@@ -87,7 +86,6 @@ namespace Spring.Core.CDH.Autowire
                             }
                         }
                     }
-                    _lockMap.TryRemove(info.ObjectInfo.id, out lockObjCheck);
                 }
             }
         }
