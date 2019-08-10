@@ -28,9 +28,9 @@ namespace Spring.Core.CDH
             return Attribute.GetCustomAttributes(element, typeof(ChangeAdoTemplateAttribute)).Cast<ChangeAdoTemplateAttribute>().ToList();
         }
 
-        public static IList<ChangeWireAttribute> GetChangeWireAttributes(this MemberInfo element)
+        public static IList<PropertyAttribute> GetChangeWireAttributes(this MemberInfo element)
         {
-            return Attribute.GetCustomAttributes(element, typeof(ChangeWireAttribute)).Cast<ChangeWireAttribute>().ToList();
+            return Attribute.GetCustomAttributes(element, typeof(PropertyAttribute)).Cast<PropertyAttribute>().ToList();
         }
     }
 }

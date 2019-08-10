@@ -55,7 +55,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AutowireAttributes.cs" />
+    <Compile Include="Attributes\ChangeAdoTemplateAttribute.cs" />
+    <Compile Include="Attributes\ChangeWireAttribute.cs" />
+    <Compile Include="Attributes\AdoTemplateNameAttribute.cs" />
+    <Compile Include="Attributes\AutowireAttributes.cs" />
     <Compile Include="AutowireExtends.cs" />
     <Compile Include="AutowireTargetPropertyInfo.cs" />
     <Compile Include="ObjectInfo.cs" />

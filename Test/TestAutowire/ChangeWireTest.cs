@@ -25,7 +25,7 @@ namespace Test
         public string Str2 { get; set; }
 
         [Autowire]
-        [ChangeWire("String1", "ChangeString")]
+        [Spring.Core.CDH.Autowire.Property("String1", "ChangeString")]
         public ChangeWireTestClass TestD { get; set; }
     }
 }

@@ -17,7 +17,7 @@ namespace Spring.Core.CDH
         protected AdoTemplateNameAttribute ObjectAdoTemplateNameAttribute { get; private set; }
         protected Type ObjectType { get; private set; }
         protected IList<ChangeAdoTemplateAttribute> ChangeAdoTemplateAttributes { get; private set; }
-        protected IList<ChangeWireAttribute> ChangeWireAttributes { get; private set; }
+        protected IList<PropertyAttribute> ChangeWireAttributes { get; private set; }
 
         public ObjectInfo(ObjectInfo parent, PropertyInfo prop)
         {
@@ -39,7 +39,7 @@ namespace Spring.Core.CDH
             ObjectAdoTemplateNameAttribute = objectType.GetAdoTemplateNameAttribute();
             ObjectType = ObjectTypeUtil.GetObjectType(ObjectAutowireAttribute, objectType);
             ChangeAdoTemplateAttributes = new List<ChangeAdoTemplateAttribute>();
-            ChangeWireAttributes = new List<ChangeWireAttribute>();
+            ChangeWireAttributes = new List<PropertyAttribute>();
 
             type = ObjectTypeUtil.GetShortAssemblyName(ObjectType);
             singleton = ObjectAutowireAttribute.Singleton;
@@ -89,13 +89,13 @@ namespace Spring.Core.CDH
         public string GetChangeWireContextName(string beforeContextName)
         {
             var info = this;
-            ChangeWireAttribute attr;
+            PropertyAttribute attr;
             while (info != null)
             {
-                attr = info.ChangeWireAttributes.FirstOrDefault(t => t.Before == beforeContextName);
+                attr = info.ChangeWireAttributes.FirstOrDefault(t => t.Name == beforeContextName);
                 if (attr != null)
                 {
-                    return attr.After;
+                    return attr.Ref;
                 }
                 info = info.Parent;
             }
