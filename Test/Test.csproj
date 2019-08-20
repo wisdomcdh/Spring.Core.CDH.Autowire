@@ -91,6 +91,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AutowireExtendsTest.cs" />
     <Compile Include="Controllers\TransactionController.cs" />
     <Compile Include="Dao\MyTable\IMyTableDao.cs" />
     <Compile Include="Dao\MyTable\Model\MyTableItem.cs" />
@@ -119,8 +120,8 @@
     <Compile Include="Controllers\AdoTemplateChangeTestController.cs" />
     <Compile Include="Controllers\AutowireAttributeSimpleTestController.cs" />
     <Compile Include="Controllers\IAutowireAttributeSimpleTestController.cs" />
-    <Compile Include="UtilTest\ObjectIdUtilTest.cs" />
-    <Compile Include="UtilTest\ObjectTypeUtilTest.cs" />
+    <Compile Include="TestHelp\CustomPropertyInfo.cs" />
+    <Compile Include="UtilTest\DefaultPropertyAttributesCreatorTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

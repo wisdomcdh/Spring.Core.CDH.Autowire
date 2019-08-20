@@ -8,16 +8,15 @@ namespace Spring.Core.CDH.Autowire
     /// 속성이나 클래스에 선언할 수 있으며, 우선순위는 속성 > 클래스 의 순서로 처리됩니다.
     /// </summary>
     [AttributeUsage(AttributeTargets.Property | AttributeTargets.Class)]
-    public class AdoTemplateNameAttribute : Attribute
+    public class AdoTemplateNameAttribute : PropertyAttribute
     {
-        /// <summary>
-        /// SpringContext에 선언된 Spring.Data.Core.AdoTemplate형태의 Id 입니다.
-        /// </summary>
-        public string AdoTemplateName { get; set; }
-
-        public AdoTemplateNameAttribute(string adoTemplateName = "AdoTemplate")
+        public AdoTemplateNameAttribute(string adoTemplateName = "AdoTemplate") : base("AdoTemplate", adoTemplateName)
         {
-            AdoTemplateName = adoTemplateName;
+        }
+
+        public override string ToString()
+        {
+            return $"<property name=\"AdoTemplate\" ref=\"{Ref}\"/>";
         }
     }
 }

@@ -34,5 +34,10 @@ namespace Spring.Core.CDH.Autowire
         /// 지연된 생성여부
         /// </summary>
         public bool LazyInit { get; set; } = false;
+
+        public override string ToString()
+        {
+            return $"<!_-<Autowire singleton=\"{Singleton}\" lazy-init=\"{LazyInit}\" context-name=\'{ContextName}\' merge-base=\'{MergeBase}\' type=\'{Type?.Name}\'/>-->";
+        }
     }
 }

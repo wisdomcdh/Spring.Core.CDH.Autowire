@@ -11,7 +11,7 @@ namespace Spring.Core.CDH.Autowire
     {
         public string Name { get; set; }
         public string Ref { get; set; }
-        public object Value { get; set; }
+        public Type Type { get; set; }
 
         public PropertyAttribute(string name, string @ref)
         {
@@ -21,11 +21,21 @@ namespace Spring.Core.CDH.Autowire
 
         public override string ToString()
         {
-            if (Value != null)
+            return $"<property name=\"{Name}\" valaue=\"{Ref}\"/>";
+        }
+
+        public virtual bool Same(object attr)
+        {
+            if (attr is PropertyAttribute)
             {
-                return $"<property name=\"{Name}\" valaue=\"{Value}\"/>";
+                var cAttr = attr as PropertyAttribute;
+                return Name == cAttr.Name
+                    && Type == cAttr.Type;
             }
-            return $"{Name}-{Ref}";
+            else
+            {
+                return false;
+            }
         }
     }
 }
