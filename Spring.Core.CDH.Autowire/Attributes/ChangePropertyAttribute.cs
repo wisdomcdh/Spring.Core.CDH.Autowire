@@ -16,25 +16,5 @@ namespace Spring.Core.CDH.Autowire
         {
             return $"<!--<property name=\"{Name}\" valaue=\"{OldRef}\"/>--><property name=\"{Name}\" valaue=\"{Ref}\"/>";
         }
-
-        public override bool Same(object attr)
-        {
-            if (attr is ChangePropertyAttribute)
-            {
-                if (base.Same(attr))
-                {
-                    var cAttr = attr as ChangePropertyAttribute;
-                    return OldRef == cAttr.OldRef;
-                }
-                else
-                {
-                    return false;
-                }
-            }
-            else
-            {
-                return base.Same(attr);
-            }
-        }
     }
 }

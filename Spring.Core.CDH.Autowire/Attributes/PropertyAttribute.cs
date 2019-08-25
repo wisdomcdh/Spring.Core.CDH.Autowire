@@ -24,7 +24,7 @@ namespace Spring.Core.CDH.Autowire
             return $"<property name=\"{Name}\" valaue=\"{Ref}\"/>";
         }
 
-        public virtual bool Same(object attr)
+        public bool Same(object attr)
         {
             if (attr is PropertyAttribute)
             {

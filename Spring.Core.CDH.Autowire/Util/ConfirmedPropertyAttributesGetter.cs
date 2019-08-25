@@ -12,13 +12,19 @@ namespace Spring.Core.CDH.Util
             var defaultAttrs = GetDefaultPropertyAttribues(info);
             var typeHasAttrs = info.ObjectType.GetPropertyAttributes();
             var propHasAttrs = prop.GetPropertyAttributes();
+            var changeAttrs = GetUseableChangePropertyAttribute(info);
 
             Extend(defaultAttrs, typeHasAttrs.Where(t => IsPropertyExists(info, t)).ToList(), propHasAttrs.Where(t => IsPropertyExists(info, t)).ToList());
-            Merge(defaultAttrs, GetChangePropertyAttribute(info));
+            Merge(defaultAttrs, changeAttrs);
 
             return defaultAttrs.ToArray();
         }
 
+        /// <summary>
+        /// PropertyAttribute 를 선언하지 않더라도 주입되어야 할 기본 속성을 가져 옵니다.
+        /// </summary>
+        /// <param name="info"></param>
+        /// <returns></returns>
         private static IList<PropertyAttribute> GetDefaultPropertyAttribues(ObjectInfo info)
         {
             IList<PropertyAttribute> defaultProperties = new List<PropertyAttribute>();
@@ -65,16 +71,21 @@ namespace Spring.Core.CDH.Util
             return desc;
         }
 
-        private static IList<PropertyAttribute> GetChangePropertyAttribute(ObjectInfo info)
+        private static IList<PropertyAttribute> GetUseableChangePropertyAttribute(ObjectInfo info)
         {
+            PropertyInfo find;
             IList<ChangePropertyAttribute> changeAttrs = new List<ChangePropertyAttribute>();
             while (info != null)
             {
                 foreach (var attr in info.PropertyDefinedChangePropertyAttributes)
                 {
-                    if (!changeAttrs.Any(t => t.Same(attr)))
+                    find = info.ObjectType.GetProperty(attr.Name);
+                    if (attr.Type == null || attr.Type.Equals(find.PropertyType))
                     {
-                        changeAttrs.Add(attr);
+                        if (!changeAttrs.Any(t => t.Same(attr)))
+                        {
+                            changeAttrs.Add(attr);
+                        }
                     }
                 }
                 info = info.Parent;
