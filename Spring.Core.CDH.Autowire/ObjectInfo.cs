@@ -1,7 +1,6 @@
 ﻿using Spring.Core.CDH.Autowire;
 using Spring.Core.CDH.Util;
 using System;
-using System.Collections.Generic;
 using System.Reflection;
 
 namespace Spring.Core.CDH
@@ -13,13 +12,15 @@ namespace Spring.Core.CDH
         public string Type { get; private set; }
         public ObjectInfo Parent { get; private set; }
         public Type ObjectType { get; private set; }
+        public bool FromProperty { get; private set; }
         public AutowireAttribute PropertyDefinedAutowireAttribute { get; private set; }
-        public IList<ChangePropertyAttribute> PropertyDefinedChangePropertyAttributes { get; private set; }
+        public ChangePropertyRefAttribute[] PropertyDefinedChangePropertyAttributes { get; private set; }
         public PropertyAttribute[] ConfirmedPropertyAttributes { get; private set; }
 
         public ObjectInfo(ObjectInfo parent, PropertyInfo prop)
         {
             Parent = parent;
+            FromProperty = true;
             PropertyDefinedAutowireAttribute = prop.GetAutowireAttribute();
             PropertyDefinedChangePropertyAttributes = prop.GetChangePropertyAttributes();
             ObjectType = prop.PropertyType.GetCreateInstanceType(PropertyDefinedAutowireAttribute);

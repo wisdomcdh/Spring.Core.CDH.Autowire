@@ -5,8 +5,8 @@ namespace Test.Service.MyTable
 {
     public class MyTableService : IMyTableService
     {
-        //[Autowire]
-        //public IMyTableDao MyTableDao { get; set; }
+        [Autowire]
+        public IMyTableDao MyTableDao { get; set; }
 
         [Autowire]
         [AdoTemplateName("AdoTemplate2")]

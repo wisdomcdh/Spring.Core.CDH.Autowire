@@ -11,7 +11,6 @@ namespace Spring.Core.CDH.Autowire
     {
         public string Name { get; set; }
         public string Ref { get; set; }
-        public Type Type { get; set; }
 
         public PropertyAttribute(string name, string @ref)
         {
@@ -24,18 +23,9 @@ namespace Spring.Core.CDH.Autowire
             return $"<property name=\"{Name}\" valaue=\"{Ref}\"/>";
         }
 
-        public bool Same(object attr)
+        public virtual bool SameRules(PropertyAttribute attr)
         {
-            if (attr is PropertyAttribute)
-            {
-                var cAttr = attr as PropertyAttribute;
-                return Name == cAttr.Name
-                    && Type == cAttr.Type;
-            }
-            else
-            {
-                return false;
-            }
+            return Name == attr.Name;
         }
     }
 }

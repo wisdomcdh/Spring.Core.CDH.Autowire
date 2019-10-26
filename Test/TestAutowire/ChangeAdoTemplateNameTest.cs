@@ -12,15 +12,15 @@ namespace Test
             var instance = new AdoTemplateChangeTestController();
             SpringAutowire.Autowire(instance);
 
-            //Assert.AreEqual(base.conn, instance.MyTableService.MyTableDao.GetConnectionString());
-            //Assert.AreEqual(base.conn2, instance.MyTableService.MyTableDao2.GetConnectionString());
-            //Assert.AreEqual(base.conn2, instance.MyTableService2.MyTableDao.GetConnectionString());
+            Assert.AreEqual(base.conn, instance.MyTableService.MyTableDao.GetConnectionString());
+            Assert.AreEqual(base.conn2, instance.MyTableService.MyTableDao2.GetConnectionString());
+            Assert.AreEqual(base.conn2, instance.MyTableService2.MyTableDao.GetConnectionString());
             Assert.AreEqual(base.conn3, instance.MyTableService2.MyTableDao2.GetConnectionString());
 
-            //Assert.AreEqual(base.conn, instance.MyTableDao.GetConnectionString());
-            //Assert.AreEqual(base.conn2, instance.MyTableDao2.GetConnectionString());
-            //Assert.AreEqual(base.conn3, instance.MyTableDao3.GetConnectionString());
-            //Assert.AreEqual(base.conn4, instance.MyTableDao4.GetConnectionString());
+            Assert.AreEqual(base.conn, instance.MyTableDao.GetConnectionString());
+            Assert.AreEqual(base.conn2, instance.MyTableDao2.GetConnectionString());
+            Assert.AreEqual(base.conn3, instance.MyTableDao3.GetConnectionString());
+            Assert.AreEqual(base.conn4, instance.MyTableDao4.GetConnectionString());
         }
     }
 }

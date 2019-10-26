@@ -3,6 +3,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Security.Cryptography;
+using System.Text;
 
 namespace Spring.Core.CDH
 {
@@ -13,19 +15,24 @@ namespace Spring.Core.CDH
             return Attribute.IsDefined(element, typeof(T), true);
         }
 
+        public static bool IsAutowirePropertyDefined(this Type type, string name)
+        {
+            return type.GetProperty(name)?.IsAttributeDefined<AutowireAttribute>() ?? false;
+        }
+
         public static AutowireAttribute GetAutowireAttribute(this MemberInfo element)
         {
             return element.GetCustomAttribute<AutowireAttribute>();
         }
 
-        public static IList<ChangePropertyAttribute> GetChangePropertyAttributes(this MemberInfo element)
+        public static ChangePropertyRefAttribute[] GetChangePropertyAttributes(this MemberInfo element)
         {
-            return element.GetCustomAttributes<ChangePropertyAttribute>().ToList();
+            return element.GetCustomAttributes<ChangePropertyRefAttribute>().ToArray();
         }
 
-        public static IList<PropertyAttribute> GetPropertyAttributes(this MemberInfo element)
+        public static IEnumerable<PropertyAttribute> GetPropertyAttributes(this MemberInfo element)
         {
-            return element.GetCustomAttributes<PropertyAttribute>().ToList();
+            return element.GetCustomAttributes<PropertyAttribute>();
         }
 
         public static int FindIndex<T>(this IEnumerable<T> items, Func<T, bool> predicate)
@@ -94,17 +101,32 @@ namespace Spring.Core.CDH
 
         public static string GetObjectId(this ObjectInfo info)
         {
-            string basedName;
-            if (string.IsNullOrEmpty(info.PropertyDefinedAutowireAttribute.ContextName))
+            if (!string.IsNullOrEmpty(info.PropertyDefinedAutowireAttribute.ContextName))
             {
-                basedName = info.Type;
+                return info.PropertyDefinedAutowireAttribute.ContextName;
             }
             else
             {
-                basedName = info.PropertyDefinedAutowireAttribute.ContextName;
+                if (!info.FromProperty)
+                {
+                    return info.Type;
+                }
+                else
+                {
+                    return string.Concat("[", info.Type, "]",
+                        GetMD5String(string.Join(string.Empty, info.PropertyDefinedChangePropertyAttributes.Union(info.ConfirmedPropertyAttributes).Select(t => t.ToString()))));
+                }
             }
-            string changeStr = string.Join(string.Empty, info.PropertyDefinedChangePropertyAttributes.Select(t => t.ToString()));
-            return string.Concat("[", basedName, "]", info.PropertyDefinedAutowireAttribute, changeStr);
+        }
+
+        private static string GetMD5String(string str)
+        {
+            byte[] resultArr;
+            using (var md5 = new MD5CryptoServiceProvider())
+            {
+                resultArr = md5.ComputeHash(Encoding.Default.GetBytes(str));
+            }
+            return string.Join(string.Empty, resultArr.Select(t => t.ToString("X2")));
         }
     }
 }

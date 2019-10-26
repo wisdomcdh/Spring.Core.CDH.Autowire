@@ -14,12 +14,12 @@ namespace Test.UtilTest
 
             var result = DefaultPropertyAttributesCreator.CreateDefaultPropertyAttributes(prop);
             Assert.AreEqual(1, result.Count);
-            Assert.AreEqual(true, expectAttr.Same(result[0]));
+            Assert.AreEqual(true, expectAttr.SameRules(result[0]));
 
             var prop2 = typeof(TestClass).GetProperty(nameof(TestClass.IsDaoProperty2));
             result = DefaultPropertyAttributesCreator.CreateDefaultPropertyAttributes(prop2);
             Assert.AreEqual(1, result.Count);
-            Assert.AreEqual(true, expectAttr.Same(result[0]));
+            Assert.AreEqual(true, expectAttr.SameRules(result[0]));
         }
 
         [Test]

@@ -22,7 +22,7 @@ namespace Spring.Core.CDH.Autowire
         {
             AbstractApplicationContext ctx = GetApplicationContext(rootContextName);
 
-            foreach (AutowireTargetPropertyInfo info in AutowireTargetPropertyGetter.FindProperties(obj.GetType()))
+            foreach (AutowireTargetPropertyInfo info in AutowireTargetPropertyGetter.FindProperties(obj.GetType(), null))
             {
                 CreateObjectDefinition(ctx, info);
                 info.PropertyInfo.SetValue(obj, ctx.GetObject(info.ObjectInfo.Id));
@@ -96,14 +96,6 @@ namespace Spring.Core.CDH.Autowire
                                 objectDefinition.PropertyValues.Add(confirmedPropAttr.Name, new RuntimeObjectReference(confirmedPropAttr.Ref));
                             }
                         }
-
-                        //if (ObjectTypeUtil.IsInheritOfAdoDaoSupport(info.ObjectInfo.GetObjectType()))
-                        //{
-                        //    if (!objectDefinition.PropertyValues.Contains("AdoTemplate"))
-                        //    {
-                        //        objectDefinition.PropertyValues.Add("AdoTemplate", new RuntimeObjectReference(info.ObjectInfo.GetAdoTemplateName()));
-                        //    }
-                        //}
                     }
                 }
             }
