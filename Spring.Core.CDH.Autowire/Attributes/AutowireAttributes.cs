@@ -21,23 +21,29 @@ namespace Spring.Core.CDH.Autowire
         public string MergeBase { get; set; }
 
         /// <summary>
-        /// 생성될 인스턴스의 타입
+        /// 생성될 인스턴스의 유형
+        /// <para></para>
+        /// 유형을 지정하지 않으면, 속성의 유형은 정해진 규칙에 따라 유추합니다.
         /// </summary>
         public Type Type { get; set; }
 
         /// <summary>
         /// 싱글턴 여부
+        /// <para></para>
+        /// 기본값 True
         /// </summary>
         public bool Singleton { get; set; } = true;
 
         /// <summary>
         /// 지연된 생성여부
+        /// <para></para>
+        /// 기본값 False
         /// </summary>
         public bool LazyInit { get; set; } = false;
 
         public override string ToString()
         {
-            return $"<!_-<Autowire singleton=\"{Singleton}\" lazy-init=\"{LazyInit}\" context-name=\'{ContextName}\' merge-base=\'{MergeBase}\' type=\'{Type?.Name}\'/>-->";
+            return $"<Autowire singleton=\"{Singleton}\" lazy-init=\"{LazyInit}\" context-name=\'{ContextName}\' merge-base=\'{MergeBase}\' type=\'{Type?.Name}\'/>";
         }
     }
 }
