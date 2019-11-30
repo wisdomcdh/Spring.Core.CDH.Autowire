@@ -7,7 +7,7 @@ using Test.Controllers;
 
 namespace Test
 {
-    internal class TransactionTest : ContextRegisterTest
+    internal class TransactionTest : TestWithSpring
     {
         public TransactionController TransactionController;
 

@@ -14,15 +14,15 @@ namespace Spring.Core.CDH.Autowire
         private static readonly IObjectDefinitionFactory fac = new DefaultObjectDefinitionFactory();
 
         /// <summary>
-        /// 전달된 <paramref name="instance"/> 인스턴스의 Autowire 특성을 분석하여 객체의 속성을 Spring Context에 등록하고, 주입합니다.
+        /// 전달된 <paramref name="instance"/> 인스턴스에서 Autowire 특성이 선언된 속성을 Spring Context에 등록하고, 주입합니다.
         /// </summary>
-        /// <param name="instance"></param>
+        /// <param name="instance">직접 생성한 인스턴스</param>
         /// <param name="rootContextName"></param>
         public static void Autowire(object instance, string rootContextName = DefaultRootContextName)
         {
             AbstractApplicationContext ctx = GetApplicationContext(rootContextName);
 
-            foreach (AutowireTargetPropertyInfo info in AutowireTargetPropertyGetter.FindProperties(instance.GetType(), null))
+            foreach (AutowireTargetPropertyInfo info in AutowireTargetPropertyGetter.GetAutowireTargetPropertiesInfo(instance.GetType(), null))
             {
                 CreateObjectDefinition(ctx, info);
                 info.PropertyInfo.SetValue(instance, ctx.GetObject(info.ObjectInfo.Id));
@@ -30,7 +30,7 @@ namespace Spring.Core.CDH.Autowire
         }
 
         /// <summary>
-        /// 전달된 <paramref name="type"/>유형과 전달된 <paramref name="autowireAttribute"/>의 Autowire 특성을 분석하여 Spring Context에 등록하고, 객체를 생성하여 반환합니다.
+        /// <paramref name="type"/> 유형과 <paramref name="autowireAttribute"/>의 Autowire 특성을 분석하여 Spring Context에 등록하고, 객체를 생성하여 반환합니다.
         /// </summary>
         /// <param name="type"></param>
         /// <param name="autowireAttribute"></param>
@@ -133,7 +133,7 @@ namespace Spring.Core.CDH.Autowire
                         }
 
                         // 현재 정의의 객체에 Autowire 특성을 가지고 있는 프로퍼티
-                        foreach (AutowireTargetPropertyInfo inInfo in AutowireTargetPropertyGetter.FindProperties(info.ObjectInfo.ObjectType, info))
+                        foreach (AutowireTargetPropertyInfo inInfo in AutowireTargetPropertyGetter.GetAutowireTargetPropertiesInfo(info.ObjectInfo.ObjectType, info))
                         {
                             // 병합 정의가 존재하는 경우
                             if (mergeTargetObjectDefinition != null)

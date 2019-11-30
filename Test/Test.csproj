@@ -98,11 +98,12 @@
     <Compile Include="Service\MyTable\ITransactionMyTableService.cs" />
     <Compile Include="Service\MyTable\TransactionMyTableService.cs" />
     <Compile Include="TestAutowire\AutowireMergeTest.cs" />
+    <Compile Include="TestAutowire\SpringAutowireTest.cs" />
     <Compile Include="TestAutowire\TransactionTest.cs" />
     <Compile Include="TestAutowire\ChangeWireTest.cs" />
     <Compile Include="TestAutowire\AutowireAttributeSimpleTest.cs" />
     <Compile Include="TestAutowire\ChangeAdoTemplateNameTest.cs" />
-    <Compile Include="ContextRegisterTest.cs" />
+    <Compile Include="TestWithSpring.cs" />
     <Compile Include="Dao\MyTable\MyTableDao.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TestAutowire\RecursiveTest.cs" />

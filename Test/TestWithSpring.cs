@@ -8,7 +8,7 @@ using System.IO;
 namespace Test
 {
     [TestFixture]
-    public abstract class ContextRegisterTest
+    public abstract class TestWithSpring
     {
         protected string conn { get; private set; }
         protected string conn2 { get; private set; }
@@ -19,7 +19,7 @@ namespace Test
         public void OneTimeSetUp()
         {
             //Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=D:\DEV\Spring.Core.CDH.Autowire\Test\TestDB.mdf;Integrated Security=True
-            var path = Path.GetDirectoryName(typeof(ContextRegisterTest).Assembly.Location);
+            var path = Path.GetDirectoryName(typeof(TestWithSpring).Assembly.Location);
             var connFormat = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename={0};Integrated Security=True";
             var testDb = Path.Combine(path, "TestDB.mdf");
             var testDb2 = Path.Combine(path, "TestDB2.mdf");

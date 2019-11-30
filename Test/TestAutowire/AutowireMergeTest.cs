@@ -3,7 +3,7 @@ using Spring.Core.CDH.Autowire;
 
 namespace Test
 {
-    internal class AutowireMergeTest : ContextRegisterTest
+    internal class AutowireMergeTest : TestWithSpring
     {
         [Test]
         public void Test()

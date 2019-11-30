@@ -65,7 +65,7 @@ namespace Spring.Core.CDH.Util
         /// <returns></returns>
         private static IList<PropertyAttribute> GetPropertyHasPropertyAttributes(PropertyInfo prop)
         {
-            return prop.GetPropertyAttributes().ToList();
+            return prop?.GetPropertyAttributes().ToList() ?? new List<PropertyAttribute>();
         }
 
         /// <summary>

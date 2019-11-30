@@ -32,6 +32,16 @@ namespace Spring.Core.CDH
 
         public ObjectInfo(AutowireAttribute autowireAttribute, Type objectType)
         {
+            Parent = null;
+            FromProperty = false;
+            PropertyDefinedAutowireAttribute = autowireAttribute;
+            PropertyDefinedChangePropertyAttributes = objectType.GetChangePropertyAttributes();
+            ObjectType = PropertyDefinedAutowireAttribute.Type;
+            ConfirmedPropertyAttributes = ConfirmedPropertyAttributesGetter.GetConfirmedPropertyAttributes(this, null);
+            Type = ObjectType.GetShortAssemblyName();
+            Singleton = PropertyDefinedAutowireAttribute.Singleton;
+            Id = this.GetObjectId();
+
             //PropertyDefinedAutowireAttribute = autowireAttribute;
             //ObjectAdoTemplateNameAttribute = objectType.GetAdoTemplateNameAttribute();
             //ObjectType = ObjectTypeUtil.GetObjectType(PropertyDefinedAutowireAttribute, objectType);

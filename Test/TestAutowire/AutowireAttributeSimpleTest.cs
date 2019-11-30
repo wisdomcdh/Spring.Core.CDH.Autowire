@@ -4,7 +4,7 @@ using Test.Controllers;
 
 namespace Test
 {
-    internal class AutowireAttributeSimpleTest : ContextRegisterTest
+    internal class AutowireAttributeSimpleTest : TestWithSpring
     {
         [Test]
         public void Test_AutowireAttributeSimpleTestController_1()

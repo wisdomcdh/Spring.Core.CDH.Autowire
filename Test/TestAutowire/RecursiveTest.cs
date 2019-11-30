@@ -4,7 +4,7 @@ using Test.Service.MyTable;
 
 namespace Test
 {
-    internal class RecursiveTest : ContextRegisterTest
+    internal class RecursiveTest : TestWithSpring
     {
         [Test]
         public void Test()
