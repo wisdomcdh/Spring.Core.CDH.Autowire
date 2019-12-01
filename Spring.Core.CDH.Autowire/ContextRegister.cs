@@ -1,5 +1,6 @@
 ﻿using Spring.Context.Support;
 using Spring.Core.IO;
+using System.IO;
 
 namespace Spring.Core.CDH.Autowire
 {
@@ -23,6 +24,15 @@ namespace Spring.Core.CDH.Autowire
                         ContextRegistry.RegisterContext(ctx);
                     }
                 }
+            }
+        }
+
+        public static void RegisterContextFromPath(string xmlContextPath, string rootContextName = SpringAutowire.DefaultRootContextName)
+        {
+            FileInfo xmlContextFile = new FileInfo(xmlContextPath);
+            if (xmlContextFile.Exists)
+            {
+                RegisterContext(File.ReadAllText(xmlContextFile.FullName));
             }
         }
     }

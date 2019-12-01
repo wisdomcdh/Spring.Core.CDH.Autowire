@@ -1,4 +1,5 @@
 ﻿using Spring.Context.Support;
+using Spring.Objects;
 using Spring.Objects.Factory.Config;
 using Spring.Objects.Factory.Support;
 using System;
@@ -43,6 +44,16 @@ namespace Spring.Core.CDH.Autowire
             {
                 throw new NullReferenceException("AutowireAttribute missing");
             }
+
+            if (autowireAttribute.Type == null)
+            {
+                autowireAttribute.Type = type;
+            }
+            if (string.IsNullOrEmpty(autowireAttribute.ContextName))
+            {
+                autowireAttribute.ContextName = $"[{type.GetShortAssemblyName()}]{$"Singleton={autowireAttribute.Singleton.ToString().ToLower()}".ToMD5String()}";
+            }
+
             var info = new AutowireTargetPropertyInfo(autowireAttribute, type);
             CreateObjectDefinition(ctx, info);
             return ctx.GetObject(info.ObjectInfo.Id);
@@ -61,7 +72,7 @@ namespace Spring.Core.CDH.Autowire
             {
                 autowireAttribute = new AutowireAttribute
                 {
-                    ContextName = type.GetShortAssemblyName(),
+                    ContextName = $"[{type.GetShortAssemblyName()}]{"Singleton=true".ToMD5String()}",
                     Type = type,
                     Singleton = false
                 };
@@ -123,30 +134,42 @@ namespace Spring.Core.CDH.Autowire
                             mergeTargetObjectDefinition = ctx.GetObjectDefinition(info.ObjectInfo.PropertyDefinedAutowireAttribute.MergeBase);
                         }
 
+                        // 병합정의가 있는경우 우선 처리
+                        if (mergeTargetObjectDefinition != null)
+                        {
+                            foreach (PropertyValue propertyValue in mergeTargetObjectDefinition.PropertyValues)
+                            {
+                                if (info.ObjectInfo.ObjectType.GetProperty(propertyValue.Name) != null)
+                                {
+                                    // 현재 정의에 없다면 등록한다.
+                                    if (!objectDefinition.PropertyValues.Contains(propertyValue.Name))
+                                    {
+                                        objectDefinition.PropertyValues.Add(mergeTargetObjectDefinition.PropertyValues.GetPropertyValue(propertyValue.Name));
+                                    }
+                                }
+                            }
+                        }
+
                         // 현재 정의의 객체나 프로퍼티에 선언된 Property 특성으로 부터 확인된 속성정의를 우선 등록한다.
                         foreach (var confirmedPropAttr in info.ObjectInfo.ConfirmedPropertyAttributes)
                         {
-                            if (!objectDefinition.PropertyValues.Contains(confirmedPropAttr.Name))
+                            // 현재 정의에 이미 존재한다면, 제거하고 새로 등록한다.
+                            if (objectDefinition.PropertyValues.Contains(confirmedPropAttr.Name))
                             {
-                                objectDefinition.PropertyValues.Add(confirmedPropAttr.Name, new RuntimeObjectReference(confirmedPropAttr.Ref));
+                                objectDefinition.PropertyValues.Remove(objectDefinition.PropertyValues.GetPropertyValue(confirmedPropAttr.Name));
                             }
+                            objectDefinition.PropertyValues.Add(confirmedPropAttr.Name, new RuntimeObjectReference(confirmedPropAttr.Ref));
                         }
 
                         // 현재 정의의 객체에 Autowire 특성을 가지고 있는 프로퍼티
                         foreach (AutowireTargetPropertyInfo inInfo in AutowireTargetPropertyGetter.GetAutowireTargetPropertiesInfo(info.ObjectInfo.ObjectType, info))
                         {
-                            // 병합 정의가 존재하는 경우
-                            if (mergeTargetObjectDefinition != null)
+                            // 이미 정의되어 있으나 이 것이 MergeBase에 의한 것이라면 지운다
+                            if (objectDefinition.PropertyValues.Contains(inInfo.PropertyInfo.Name))
                             {
-                                // 병합 정의에 현재 속성의 정의분이 있는 경우
-                                if (mergeTargetObjectDefinition.PropertyValues.Contains(inInfo.PropertyInfo.Name))
+                                if (mergeTargetObjectDefinition != null && mergeTargetObjectDefinition.PropertyValues.Contains(inInfo.PropertyInfo.Name))
                                 {
-                                    // 현재 정의에 이미 존재한다면, 제거하고 새로 등록한다.
-                                    if (objectDefinition.PropertyValues.Contains(inInfo.PropertyInfo.Name))
-                                    {
-                                        objectDefinition.PropertyValues.Remove(objectDefinition.PropertyValues.GetPropertyValue(inInfo.PropertyInfo.Name));
-                                    }
-                                    objectDefinition.PropertyValues.Add(mergeTargetObjectDefinition.PropertyValues.GetPropertyValue(inInfo.PropertyInfo.Name));
+                                    objectDefinition.PropertyValues.Remove(objectDefinition.PropertyValues.GetPropertyValue(inInfo.PropertyInfo.Name));
                                 }
                             }
 

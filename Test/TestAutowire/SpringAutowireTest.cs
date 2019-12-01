@@ -3,10 +3,13 @@ using Spring.Core.CDH.Autowire;
 
 namespace Test
 {
+    /// <summary>
+    /// 가장 기본적인 Autowired 테스트
+    /// </summary>
     public class SpringAutowireTest : TestWithSpring
     {
         [Test]
-        public void Autowire_Autowire특성이선언된객체를생성하여_Autowire할때_해당속성은재귀적으로Autowire된다()
+        public void Autowire_Autowire특성이선언된객체를직접생성하여_Autowire할때_해당속성은재귀적으로Autowired된다()
         {
             // Arrange
             var zoo = new Zoo();
@@ -35,7 +38,7 @@ namespace Test
         }
 
         [Test]
-        public void Autowire_Autowire특성이선언된객체의유형으로_Autowire할때_인스턴스의생성을하고속성들이재귀적으로Autowire된다2()
+        public void Autowire_Autowire특성이선언된객체의유형으로_Autowire할때_인스턴스의생성을하고속성들이재귀적으로Autowire된다_제네릭방식()
         {
             // Act
             var zoo = SpringAutowire.Autowire<Zoo>();

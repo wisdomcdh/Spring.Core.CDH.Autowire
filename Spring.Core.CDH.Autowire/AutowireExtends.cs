@@ -128,5 +128,10 @@ namespace Spring.Core.CDH
             }
             return string.Join(string.Empty, resultArr.Select(t => t.ToString("X2")));
         }
+
+        public static string ToMD5String(this string str)
+        {
+            return GetMD5String(str);
+        }
     }
 }

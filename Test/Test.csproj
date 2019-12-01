@@ -97,11 +97,12 @@
     <Compile Include="Dao\MyTable\Model\MyTableItem.cs" />
     <Compile Include="Service\MyTable\ITransactionMyTableService.cs" />
     <Compile Include="Service\MyTable\TransactionMyTableService.cs" />
-    <Compile Include="TestAutowire\AutowireMergeTest.cs" />
+    <Compile Include="TestAutowire\AutowireContextNameTest.cs" />
+    <Compile Include="TestAutowire\AutowireMergBaseeTest.cs" />
     <Compile Include="TestAutowire\SpringAutowireTest.cs" />
     <Compile Include="TestAutowire\TransactionTest.cs" />
     <Compile Include="TestAutowire\ChangeWireTest.cs" />
-    <Compile Include="TestAutowire\AutowireAttributeSimpleTest.cs" />
+    <Compile Include="TestAutowire\AutowireAttributeTypeAndSingletonTest.cs" />
     <Compile Include="TestAutowire\ChangeAdoTemplateNameTest.cs" />
     <Compile Include="TestWithSpring.cs" />
     <Compile Include="Dao\MyTable\MyTableDao.cs" />
@@ -149,6 +150,9 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="SpringAppContext.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="TestDB4.mdf">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
