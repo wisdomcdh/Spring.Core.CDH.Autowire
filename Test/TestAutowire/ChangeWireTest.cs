@@ -3,7 +3,7 @@ using Spring.Core.CDH.Autowire;
 
 namespace Test
 {
-    internal class ChangeWireTest : ContextRegisterTest
+    internal class ChangeWireTest : TestWithSpring
     {
         [Test]
         public void Test()
@@ -25,7 +25,7 @@ namespace Test
         public string Str2 { get; set; }
 
         [Autowire]
-        [ChangeWire("String1", "ChangeString")]
+        [Spring.Core.CDH.Autowire.Property("Str1", "ChangeString")]
         public ChangeWireTestClass TestD { get; set; }
     }
 }

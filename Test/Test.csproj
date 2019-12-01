@@ -91,17 +91,20 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AutowireExtendsTest.cs" />
     <Compile Include="Controllers\TransactionController.cs" />
     <Compile Include="Dao\MyTable\IMyTableDao.cs" />
     <Compile Include="Dao\MyTable\Model\MyTableItem.cs" />
     <Compile Include="Service\MyTable\ITransactionMyTableService.cs" />
     <Compile Include="Service\MyTable\TransactionMyTableService.cs" />
-    <Compile Include="TestAutowire\AutowireMergeTest.cs" />
+    <Compile Include="TestAutowire\AutowireContextNameTest.cs" />
+    <Compile Include="TestAutowire\AutowireMergBaseeTest.cs" />
+    <Compile Include="TestAutowire\SpringAutowireTest.cs" />
     <Compile Include="TestAutowire\TransactionTest.cs" />
     <Compile Include="TestAutowire\ChangeWireTest.cs" />
-    <Compile Include="TestAutowire\AutowireAttributeSimpleTest.cs" />
+    <Compile Include="TestAutowire\AutowireAttributeTypeAndSingletonTest.cs" />
     <Compile Include="TestAutowire\ChangeAdoTemplateNameTest.cs" />
-    <Compile Include="ContextRegisterTest.cs" />
+    <Compile Include="TestWithSpring.cs" />
     <Compile Include="Dao\MyTable\MyTableDao.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TestAutowire\RecursiveTest.cs" />
@@ -119,8 +122,8 @@
     <Compile Include="Controllers\AdoTemplateChangeTestController.cs" />
     <Compile Include="Controllers\AutowireAttributeSimpleTestController.cs" />
     <Compile Include="Controllers\IAutowireAttributeSimpleTestController.cs" />
-    <Compile Include="UtilTest\ObjectIdUtilTest.cs" />
-    <Compile Include="UtilTest\ObjectTypeUtilTest.cs" />
+    <Compile Include="TestHelp\CustomPropertyInfo.cs" />
+    <Compile Include="UtilTest\DefaultPropertyAttributesCreatorTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -147,6 +150,9 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="SpringAppContext.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="TestDB4.mdf">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

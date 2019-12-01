@@ -55,15 +55,20 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AutowireAttributes.cs" />
+    <Compile Include="Attributes\ChangeAdoTemplateAttribute.cs" />
+    <Compile Include="Attributes\ChangePropertyRefAttribute.cs" />
+    <Compile Include="Attributes\PropertyAttribute.cs" />
+    <Compile Include="Attributes\AdoTemplateNameAttribute.cs" />
+    <Compile Include="Attributes\AutowireAttributes.cs" />
     <Compile Include="AutowireExtends.cs" />
     <Compile Include="AutowireTargetPropertyInfo.cs" />
     <Compile Include="ObjectInfo.cs" />
     <Compile Include="SpringAutowire.cs" />
     <Compile Include="ContextRegister.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Util\ObjectIdUtil.cs" />
-    <Compile Include="Util\ObjectTypeUtil.cs" />
+    <Compile Include="Util\AutowireTargetPropertyGetter.cs" />
+    <Compile Include="Util\DefaultPropertyAttributesCreator.cs" />
+    <Compile Include="Util\ConfirmedPropertyAttributesGetter.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

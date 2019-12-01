@@ -1,0 +1,69 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<objects xmlns="http://www.springframework.net"
+         xmlns:aop="http://www.springframework.net/aop"
+         xmlns:db="http://www.springframework.net/database"
+         xmlns:tx="http://www.springframework.net/tx">
+  <db:provider id="DbProvider" provider="System.Data.SqlClient" connectionString="Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=TestDB.mdf;Integrated Security=True" />
+  <db:provider id="DbProvider2" provider="System.Data.SqlClient" connectionString="Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=TestDB2.mdf;Integrated Security=True" />
+  <db:provider id="DbProvider3" provider="System.Data.SqlClient" connectionString="Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=TestDB3.mdf;Integrated Security=True" />
+  <db:provider id="DbProvider4" provider="System.Data.SqlClient" connectionString="Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=TestDB4.mdf;Integrated Security=True" />
+  <object id="AdoTemplate" type="Spring.Data.Generic.AdoTemplate, Spring.Data">
+    <property name="DbProvider" ref="DbProvider" />
+    <property name="DataReaderWrapperType" value="Spring.Data.Support.NullMappingDataReader, Spring.Data" />
+    <property name="CommandTimeout" value="60" />
+  </object>
+  <object id="AdoTemplate2" type="Spring.Data.Generic.AdoTemplate, Spring.Data">
+    <property name="DbProvider" ref="DbProvider2" />
+    <property name="DataReaderWrapperType" value="Spring.Data.Support.NullMappingDataReader, Spring.Data" />
+    <property name="CommandTimeout" value="60" />
+  </object>
+  <object id="AdoTemplate3" type="Spring.Data.Generic.AdoTemplate, Spring.Data">
+    <property name="DbProvider" ref="DbProvider3" />
+    <property name="DataReaderWrapperType" value="Spring.Data.Support.NullMappingDataReader, Spring.Data" />
+    <property name="CommandTimeout" value="60" />
+  </object>
+  <object id="AdoTemplate4" type="Spring.Data.Generic.AdoTemplate, Spring.Data">
+    <property name="DbProvider" ref="DbProvider4" />
+    <property name="DataReaderWrapperType" value="Spring.Data.Support.NullMappingDataReader, Spring.Data" />
+    <property name="CommandTimeout" value="60" />
+  </object>
+  <object id="transactionManager" type="Spring.Data.Core.AdoPlatformTransactionManager, Spring.Data">
+    <property name="DbProvider" ref="DbProvider" />
+  </object>
+  <object id="transactionManager2" type="Spring.Data.Core.AdoPlatformTransactionManager, Spring.Data">
+    <property name="DbProvider" ref="DbProvider2" />
+  </object>
+  <object id="transactionManager3" type="Spring.Data.Core.AdoPlatformTransactionManager, Spring.Data">
+    <property name="DbProvider" ref="DbProvider3" />
+  </object>
+  <object id="transactionManager4" type="Spring.Data.Core.AdoPlatformTransactionManager, Spring.Data">
+    <property name="DbProvider" ref="DbProvider4" />
+  </object>
+  <object id="String1" type="System.String">
+    <constructor-arg value="Text1" />
+  </object>
+  <object id="String2" type="System.String">
+    <constructor-arg value="Text2" />
+  </object>
+  <object id="ChangeString" type="System.String">
+    <constructor-arg value="ChangeText1" />
+  </object>
+  <object id="tranMyTableDao" type="Test.Dao.MyTable.MyTableDao, Spring.CDH.Test">
+    <property name="AdoTemplate" ref="AdoTemplate" />
+  </object>
+  <object id="tranTest" type="Test.Service.MyTable.TransactionMyTableService, Spring.CDH.Test">
+    <property name="MyTableDao" ref="tranMyTableDao" />
+  </object>
+  <object id="MERGE_AutowireMergeTestInnerClass" type="Test.AutowireMergeTestInnerClass, Spring.CDH.Test">
+    <property name="Str1" value="MERGE_STR1" />
+    <property name="Str2" value="MERGE_STR2" />
+  </object>
+  <object id="DEFINED_AutowireContextNameTestInnerClass" type="Test.AutowireContextNameTestInnerClass, Spring.CDH.Test">
+    <property name="Str1" value="DEFINED_STR1" />
+    <property name="Str2" value="DEFINED_STR2" />
+  </object>
+  <tx:attribute-driven transaction-manager="transactionManager" />
+  <tx:attribute-driven transaction-manager="transactionManager2" />
+  <tx:attribute-driven transaction-manager="transactionManager3" />
+  <tx:attribute-driven transaction-manager="transactionManager4" />
+</objects>
