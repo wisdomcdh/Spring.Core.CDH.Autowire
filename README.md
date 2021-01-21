@@ -1,7 +1,12 @@
 # Spring.Core.CDH.Autowire
 
-You can mimic JAVA Spring @autowired.
 Use the autowire attribute on the property.
+
+Caution!) This library is designed to avoid declaring service objects in a way that uses XML.
+
+You are not implementing a separate custom ObjectDefinitionScanner.
+
+Use it simply when you want to reduce XML declarations.
 
 ```cs
 [Autowire]
